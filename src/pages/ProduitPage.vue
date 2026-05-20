@@ -10,11 +10,25 @@
     <div class="row items-start no-wrap">
       <!-- barre latérale gauche -->
       <div class="col-auto">
-        <div class="q-pa-sm bg-grey-2 rounded-borders column items-center" style="min-width: 120px; max-width: 140px; height: calc(100vh - 4rem);">
+        <div class="q-pa-sm bg-grey-2 rounded-borders" style="min-width: 120px; max-width: 160px; height: calc(100vh - 4rem);">
           <div class="text-subtitle2 text-center q-mb-md">Menu</div>
-          <q-btn label="Accueil" color="primary" flat class="full-width q-mb-sm" @click="goHome" />
-          <q-btn label="panier" color="primary" flat class="full-width q-mb-sm" />
-          <q-btn label="Service client" color="primary" flat class="full-width q-mb-sm" />
+          <q-list bordered padding>
+            <q-item clickable v-ripple @click="goHome">
+              <q-item-section>
+                Accueil
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple>
+              <q-item-section>
+                Panier
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple>
+              <q-item-section>
+                Service client
+              </q-item-section>
+            </q-item>
+          </q-list>
         </div>
       </div>
 
