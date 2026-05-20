@@ -1,65 +1,78 @@
 <template>
-  <div class="q-pa-md q-gutter-sm">
-    <q-banner rounded class="bg-purple-8 text-white">
-      We can't find your saved recipes until you sign in.
+  <q-page class="page-menu q-pa-md" style="position: relative; min-height: 100vh;">
+    <!-- logo en haut à droite -->
+    <img
+      src="https://cdn.quasar.dev/img/avatar2.jpg"
+      alt="logo"
+      style="position: absolute; top: 1rem; right: 1rem; width: 50px; height: 50px; border-radius: 50%;"
+    />
 
-      <template v-slot:action>
-        <q-btn flat color="white" label="Continue as a Guest" />
-        <q-btn flat color="white" label="Sign in" />
-      </template>
-    </q-banner>
-  </div>
-  <q-btn round>
-    <q-avatar size="42px">
-      <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
-    </q-avatar>
-  </q-btn>
-  <q-page class="page-menu flex flex-center">
-    <div class="menu-box text-center">
-      <q-carousel
-        v-model="slide"
-        transition-prev="slide-right"
-        transition-next="slide-left"
-        animated
-        control-color="primary"
-        class="rounded-borders"
-      >
-        <q-carousel-slide
-          v-for="item in messages"
-          :key="item.name"
-          :name="item.name"
-          class="column no-wrap flex-center"
-        >
-          <q-icon name="style" color="primary" size="56px" />
-          <div class="q-mt-md text-center" @click="addProduct">
-            {{ item.description }}
+    <div class="row items-start no-wrap">
+      <!-- barre latérale gauche -->
+      <div class="col-auto">
+        <div class="q-pa-sm bg-grey-2 rounded-borders column items-center" style="min-width: 120px; max-width: 140px; height: calc(100vh - 4rem);">
+          <div class="text-subtitle2 text-center q-mb-md">Menu</div>
+          <q-btn label="Accueil" color="primary" flat class="full-width q-mb-sm" @click="goHome" />
+          <q-btn label="panier" color="primary" flat class="full-width q-mb-sm" />
+          <q-btn label="Service client" color="primary" flat class="full-width q-mb-sm" />
+        </div>
+      </div>
+
+      <!-- zone principale du carousel -->
+      <div class="col">
+        <div class="row justify-center">
+          <div class="col-12 col-lg-10">
+            <div class="menu-box text-center">
+              <q-carousel
+                v-model="slide"
+                transition-prev="slide-right"
+                transition-next="slide-left"
+                animated
+                control-color="primary"
+                class="rounded-borders"
+              >
+                <q-carousel-slide
+                  v-for="item in messages"
+                  :key="item.name"
+                  :name="item.name"
+                  class="column no-wrap flex-center"
+                >
+                  <q-icon name="style" color="primary" size="56px" />
+                  <div class="q-mt-md text-center">
+                    {{ item.description }}
+                  </div>
+                </q-carousel-slide>
+              </q-carousel>
+
+              <div class="row justify-center q-mt-md">
+                <!-- pagination du carousel sous le contenu -->
+                <q-btn-toggle
+                  glossy
+                  v-model="slide"
+                  :options="messages.map((item, index) => ({ label: `${index + 1}`, value: item.name }))"
+                />
+              </div>
+            </div>
           </div>
-        </q-carousel-slide>
-      </q-carousel>
-
-      <div class="row justify-center">
-        <q-btn-toggle
-          glossy
-          v-model="slide"
-          :options="messages.map((item, index) => ({ label: `${index + 1}`, value: item.name }))"
-        />
+        </div>
       </div>
     </div>
   </q-page>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 import dataSet from '../../data/data.json';
 
+const router = useRouter();
+
+// données du carousel
 const messages = ref(dataSet);
+// slide actif
 const slide = ref('Produit1');
 
-function addProduct() {
-  const newProduct = {
-    name: `Produit${messages.value.length + 1}`,
-    description: `Description du produit ${messages.value.length + 1}`,
-  };
-  messages.value.push(newProduct);
+async function goHome() {
+  await router.push('/');
 }
 </script>
