@@ -10,8 +10,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/IndexPage.vue'),
       },
       {
-        path: 'toto',
-        component: () => import('pages/TotoPage.vue'),
+        path: 'produit',
+        component: () => import('pages/ProduitPage.vue'),
       },
     ],
   },

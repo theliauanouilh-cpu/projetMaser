@@ -1,0 +1,11 @@
+[
+  { "name": "Produit1", "description": "Description du produit 1" },
+  { "name": "Produit2", "description": "Description du produit 2" },
+  { "name": "Produit3", "description": "Description du produit 3" },
+  { "name": "Produit4", "description": "Description du produit 4" },
+  { "name": "Produit5", "description": "Description du produit 5" },
+  { "name": "Produit6", "description": "Description du produit 6" },
+  { "name": "Produit7", "description": "Description du produit 7" },
+  { "name": "Produit8", "description": "Description du produit 8" }
+
+]
