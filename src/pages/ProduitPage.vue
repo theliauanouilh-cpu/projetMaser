@@ -1,21 +1,22 @@
 <template>
-  <q-page class="page-menu q-pa-md" style="position: relative; min-height: 100vh;">
-    <!-- logo en haut à droite -->
-    <img
-      src="https://cdn.quasar.dev/img/avatar2.jpg"
-      alt="logo"
-      style="position: absolute; top: 1rem; right: 1rem; width: 50px; height: 50px; border-radius: 50%;"
-    />
+  <q-page class="page-menu q-pa-md" style="position: relative; min-height: 100vh;" @click="incrementCounter">
+    <!-- petit compteur en haut à droite  -->
+    <div
+      class="bg-white text-primary shadow-2 flex items-center justify-center"
+      style="position: absolute; top: 1rem; right: 1rem; width: 42px; height: 42px; border-radius: 50%; font-weight: 600;"
+    >
+      {{ clickCount }}
+    </div>
 
     <div class="row items-start no-wrap">
-      <!-- barre latérale gauche -->
+      <!-- barre latérale gauche + liste -->
       <div class="col-auto">
         <div class="q-pa-sm bg-grey-2 rounded-borders" style="min-width: 120px; max-width: 160px; height: calc(100vh - 4rem);">
           <div class="text-subtitle2 text-center q-mb-md">Menu</div>
           <q-list bordered padding>
             <q-item clickable v-ripple @click="goHome">
               <q-item-section>
-                Accueil
+                Accueil 
               </q-item-section>
             </q-item>
             <q-item clickable v-ripple>
@@ -28,6 +29,14 @@
                 Service client
               </q-item-section>
             </q-item>
+            <q-item clickable v-ripple>
+              <q-item-section>
+                <test-component
+                  msg="Hello from ProduitPage"
+                  @change="testClicked"
+                />
+              </q-item-section>
+            </q-item>            
           </q-list>
         </div>
       </div>
@@ -78,6 +87,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import dataSet from '../../data/data.json';
+import TestComponent from '../components/TestComponent.vue';
 
 const router = useRouter();
 
@@ -85,6 +95,17 @@ const router = useRouter();
 const messages = ref(dataSet);
 // slide actif
 const slide = ref('Produit1');
+
+// compteur de clics 
+const clickCount = ref(0);
+
+function incrementCounter() {
+  clickCount.value++;
+}
+
+function testClicked(payload: unknown) {
+  console.log('Event from TestComponent:', payload);
+}
 
 async function goHome() {
   await router.push('/');
