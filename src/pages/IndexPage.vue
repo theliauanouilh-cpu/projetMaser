@@ -2,6 +2,9 @@
   <q-page class="page-menu flex flex-center">
     <div class="menu-box text-center">
       <h1 class="menu-title">Bienvenue</h1>
+      <span class="material-icons-outlined">
+person
+</span>
       <p class="menu-subtitle">
         Découvrez notre sélection de produits.
       </p>
