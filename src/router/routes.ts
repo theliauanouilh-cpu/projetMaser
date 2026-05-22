@@ -10,17 +10,15 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/IndexPage.vue'),
       },
       {
-        path: 'produit',
+        path: 'produit/:id?',
         component: () => import('pages/ProduitPage.vue'),
+        props: true,
+      },
+      {
+        path: 'panier',
+        component: () => import('pages/PanierPage.vue'),
       },
     ],
-  },
-
-  // Always leave this as last one,
-  // but you can also remove it
-  {
-    path: '/:catchAll(.*)*',
-    component: () => import('pages/ErrorNotFound.vue'),
   },
 ];
 

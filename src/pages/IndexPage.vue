@@ -4,6 +4,10 @@
     <div class="menu-box text-center">
       <h1 class="menu-title">Bienvenue</h1>
       <h2>Découvrez notre sélection de produits</h2>
+      {{ counterStore.panier }}
+      <div class="q-pa-md q-gutter-sm" @click="counterStore.addToPanier(2)">
+        <q-btn round color="primary" icon="shopping_cart" />
+      </div>
       <q-btn
         label="Visiter la boutique"
         color="primary"
@@ -17,6 +21,8 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import TestComponent from '../components/TestComponent.vue';
+import { useCounterStore } from '../stores/example-store';
+const counterStore = useCounterStore();
 
 const router = useRouter();
 
@@ -27,5 +33,6 @@ async function goToProduit() {
 function testClicked(count: number) {
   console.log('New clickCount:', count);
 }
+
+// @product
 </script>
-    
