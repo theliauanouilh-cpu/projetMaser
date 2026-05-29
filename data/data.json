@@ -1,11 +1,41 @@
 [
-  { "name": "Produit1", "description": "Description du produit 1" },
-  { "name": "Produit2", "description": "Description du produit 2" },
-  { "name": "Produit3", "description": "Description du produit 3" },
-  { "name": "Produit4", "description": "Description du produit 4" },
-  { "name": "Produit5", "description": "Description du produit 5" },
-  { "name": "Produit6", "description": "Description du produit 6" },
-  { "name": "Produit7", "description": "Description du produit 7" },
-  { "name": "Produit8", "description": "Description du produit 8" }
+  {
+    "id": 1,
+    "nom": "Canapé Oslo",
+    "slide": 0,
+    "images": ["/images/products/1/front.jpg", "/images/products/1/back.jpg"]
+  },
+  {
+    "id": 9,
+    "nom": "Canapé Prado",
+    "slide": 0,
+    "images": ["/images/products/9/front.jpg", "/images/products/9/back.jpg"]
+  },
+  {
+    "id": 7,
+    "nom": "Canapé Roma",
+    "slide": 0,
+    "images": ["/images/products/7/front.jpg", "/images/products/7/back.jpg"]
+  },
 
+  {
+    "id": 4,
+    "nom": "Canapé Nova",
+    "slide": 0,
+    "images": ["/images/products/4/front.jpg", "/images/products/4/back.jpg"]
+  },
+  {
+    "id": 6,
+    "nom": "Canapé Berlin",
+    "slide": 0,
+    "images": ["/images/products/6/front.jpg", "/images/products/6/back.jpg"]
+  },
+  {
+    "id": 8,
+    "nom": "Canapé Vienna",
+    "slide": 0,
+    "images": ["/images/products/8/front.jpg", "/images/products/8/back.jpg"]
+  }
 ]
+
+

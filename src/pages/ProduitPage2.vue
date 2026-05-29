@@ -24,7 +24,7 @@
           </q-list>
 
           <div class="q-pa-md">
-            <q-btn-dropdown color="primary" label="Catégories">
+            <q-btn-dropdown color="primary" label="categories">
               <q-list>
                 <q-item clickable v-close-popup @click="onItemClick">
                   <q-item-section>
@@ -123,7 +123,7 @@ function testClicked(count: number) {
   console.log('New clickCount:', count);
 }
 
-export interface Produit {
+interface Produit {
   id: number;
   nom: string;
   prix: number;
@@ -133,46 +133,46 @@ export interface Produit {
 
 const produits = ref<Produit[]>([
   {
-    id: 1,
-    nom: 'Canapé Oslo',
+    id: 7,
+    nom: 'Canapé Roma',
     prix: 1500,
     slide: 0,
-    images: ['/images/products/1/front.jpg', '/images/products/1/back.jpg'],
+    images: ['/images/products/7/front.jpg', '/images/products/7/back.jpg'],
   },
   {
-    id: 2,
-    nom: 'Canapé Milan',
+    id: 8,
+    nom: 'Canapé Vienna',
     prix: 1200,
     slide: 0,
-    images: ['/images/products/2/front.jpg', '/images/products/2/back.jpg'],
+    images: ['/images/products/8/front.jpg', '/images/products/8/back.jpg'],
   },
   {
-    id: 3,
-    nom: 'Canapé Luna',
+    id: 9,
+    nom: 'Canapé Prado',
     prix: 1000,
     slide: 0,
-    images: ['/images/products/3/front.jpg', '/images/products/3/back.jpg'],
+    images: ['/images/products/9/front.jpg', '/images/products/9/back.jpg'],
   },
   {
-    id: 4,
-    nom: 'Canapé Nova',
+    id: 10,
+    nom: 'Canapé Eden',
     prix: 800,
     slide: 0,
-    images: ['/images/products/4/front.jpg', '/images/products/4/back.jpg'],
+    images: ['/images/products/10/front.jpg', '/images/products/10/back.jpg'],
   },
   {
-    id: 5,
-    nom: 'Canapé Tokyo',
+    id: 11,
+    nom: 'Canapé Atlas',
     prix: 600,
     slide: 0,
-    images: ['/images/products/5/front.jpg', '/images/products/5/back.jpg'],
+    images: ['/images/products/11/front.jpg', '/images/products/11/back.jpg'],
   },
   {
-    id: 6,
-    nom: 'Canapé Berlin',
+    id: 12,
+    nom: 'Canapé Saphir',
     prix: 500,
     slide: 0,
-    images: ['/images/products/6/front.jpg', '/images/products/6/back.jpg'],
+    images: ['/images/products/12/front.jpg', '/images/products/12/back.jpg'],
   },
 ]);
 
@@ -188,11 +188,11 @@ async function goToPanier() {
   await router.push('/panier');
 }
 
-async function goToPage2() {
-  await router.push('/page2');
-}
-
 async function goToProduit() {
   await router.push('/produit');
+}
+
+async function goToPage2() {
+  await router.push('/page2');
 }
 </script>
