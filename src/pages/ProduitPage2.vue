@@ -111,10 +111,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import TestComponent from '../components/TestComponent.vue';
 import { useCounterStore } from '../stores/example-store';
+import type { Produit } from '../stores/example-store';
+
 
 const counterStore = useCounterStore();
 const router = useRouter();
@@ -123,58 +125,8 @@ function testClicked(count: number) {
   console.log('New clickCount:', count);
 }
 
-interface Produit {
-  id: number;
-  nom: string;
-  prix: number;
-  slide: number;
-  images: string[];
-}
-
-const produits = ref<Produit[]>([
-  {
-    id: 7,
-    nom: 'Canapé Roma',
-    prix: 1500,
-    slide: 0,
-    images: ['/images/products/7/front.jpg', '/images/products/7/back.jpg'],
-  },
-  {
-    id: 8,
-    nom: 'Canapé Vienna',
-    prix: 1200,
-    slide: 0,
-    images: ['/images/products/8/front.jpg', '/images/products/8/back.jpg'],
-  },
-  {
-    id: 9,
-    nom: 'Canapé Prado',
-    prix: 1000,
-    slide: 0,
-    images: ['/images/products/9/front.jpg', '/images/products/9/back.jpg'],
-  },
-  {
-    id: 10,
-    nom: 'Canapé Eden',
-    prix: 800,
-    slide: 0,
-    images: ['/images/products/10/front.jpg', '/images/products/10/back.jpg'],
-  },
-  {
-    id: 11,
-    nom: 'Canapé Atlas',
-    prix: 600,
-    slide: 0,
-    images: ['/images/products/11/front.jpg', '/images/products/11/back.jpg'],
-  },
-  {
-    id: 12,
-    nom: 'Canapé Saphir',
-    prix: 500,
-    slide: 0,
-    images: ['/images/products/12/front.jpg', '/images/products/12/back.jpg'],
-  },
-]);
+// Utilise les produits du store
+const produits = computed(() => counterStore.products) as unknown as Produit[];
 
 function onItemClick() {
   console.log('Menu item clicked');
