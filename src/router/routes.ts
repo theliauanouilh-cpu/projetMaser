@@ -18,10 +18,7 @@ const routes: RouteRecordRaw[] = [
         path: 'panier',
         component: () => import('pages/PanierPage.vue'),
       },
-      {
-        path: 'page2',
-        component: () => import('pages/ProduitPage2.vue'),
-      },
+      
     ],
   },
 ];

@@ -1,5 +1,7 @@
 <template>
+  <!-- Page principale Quasar, prend toute la hauteur de l'écran -->
   <q-page class="page-menu" style="min-height: 100vh">
+    <!-- Ligne principale : sidebar à gauche + produits à droite -->
     <div class="row no-wrap" style="min-height: 100vh">
       <!-- Sidebar -->
       <div class="col-auto q-pa-md">
@@ -7,8 +9,10 @@
           class="q-pa-md bg-grey-2 rounded-borders"
           style="min-width: 220px; max-width: 260px; height: calc(100vh - 2rem)"
         >
+          <!-- Titre du menu latéral -->
           <div class="text-h6 text-center q-mb-lg">Menu</div>
 
+          <!-- Liste de navigation -->
           <q-list bordered padding class="rounded-borders bg-white">
             <q-item clickable v-ripple @click="goHome">
               <q-item-section>Accueil</q-item-section>
@@ -23,36 +27,49 @@
             </q-item>
           </q-list>
 
+          <!-- Menu déroulant pour filtrer les produits par catégorie -->
           <div class="q-pa-md">
             <q-btn-dropdown color="primary" label="Catégories">
               <q-list>
-                <q-item clickable v-close-popup @click="onItemClick">
+                <q-item clickable v-close-popup @click="filtrerParCategorie('Noir')">
                   <q-item-section>
                     <q-item-label>Noir</q-item-label>
                   </q-item-section>
                 </q-item>
 
-                <q-item clickable v-close-popup @click="onItemClick">
+                <q-item clickable v-close-popup @click="filtrerParCategorie('Vert')">
                   <q-item-section>
                     <q-item-label>Vert</q-item-label>
                   </q-item-section>
                 </q-item>
 
-                <q-item clickable v-close-popup @click="onItemClick">
+                <q-item clickable v-close-popup @click="filtrerParCategorie('Marron')">
                   <q-item-section>
                     <q-item-label>Marron</q-item-label>
                   </q-item-section>
                 </q-item>
 
-                <q-item clickable v-close-popup @click="onItemClick">
+                <q-item clickable v-close-popup @click="filtrerParCategorie('Blanc')">
                   <q-item-section>
                     <q-item-label>Blanc</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item clickable v-close-popup @click="filtrerParCategorie('Toutes')">
+                  <q-item-section>
+                    <q-item-label>Toutes</q-item-label>
                   </q-item-section>
                 </q-item>
               </q-list>
             </q-btn-dropdown>
           </div>
 
+          <!-- Affiche la catégorie actuellement sélectionnée -->
+          <div class="q-mt-md text-caption">
+            Catégorie sélectionnée : {{ selectedCategorie }}
+          </div>
+
+          <!-- Zone contenant un composant de test -->
           <div class="q-mt-lg">
             <div class="menu-box text-center">
               <test-component msg="Hello from ProduitPage" @change="testClicked" />
@@ -61,11 +78,17 @@
         </div>
       </div>
 
-      <!-- Produits à droite -->
+      <!-- Partie droite : affichage des produits -->
       <div class="col q-pa-lg">
         <div class="row q-col-gutter-lg">
-          <div v-for="produit in produits" :key="produit.id" class="col-12 col-md-6">
+          <!-- On boucle sur les produits paginés -->
+          <div
+            v-for="produit in produitsPagines"
+            :key="produit.id"
+            class="col-12 col-md-6"
+          >
             <q-card class="product-card">
+              <!-- Carrousel d'images -->
               <q-carousel
                 v-model="produit.slide"
                 animated
@@ -84,12 +107,19 @@
                 </q-carousel-slide>
               </q-carousel>
 
+              <!-- Infos produit -->
               <q-card-section>
                 <div class="text-h6">{{ produit.nom }}</div>
                 <div class="text-caption text-grey-7">ID : {{ produit.id }}</div>
+
+                <div v-if="produit.categorie" class="text-caption text-grey-7">
+                  Catégorie : {{ produit.categorie }}
+                </div>
+
                 <div class="text-h5">{{ produit.prix.toFixed(2) }} €</div>
               </q-card-section>
 
+              <!-- Bouton panier -->
               <q-card-actions align="right">
                 <q-btn
                   color="primary"
@@ -100,85 +130,47 @@
             </q-card>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="q-pa-md flex flex-center">
-      <q-btn color="primary" label="1" @click="goToProduit" />
-      <q-btn color="primary" label="2" @click="goToPage2" />
+        <!-- Pagination -->
+        <div class="q-pa-lg flex flex-center">
+          <q-pagination
+            v-model="current"
+            :max="nombrePages"
+            color="primary"
+            direction-links
+            boundary-links
+            :max-pages="6"
+          />
+        </div>
+      </div>
     </div>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import dataSet from '../../data/data.json';
 import { useRouter } from 'vue-router';
-import TestComponent from '../components/TestComponent.vue';
 import { useCounterStore } from '../stores/example-store';
 
-const counterStore = useCounterStore();
-const router = useRouter();
+const produits = ref(dataSet);
 
+const router = useRouter();
+const counterStore = useCounterStore();
+
+// Fonction appelée quand le composant enfant émet l'événement "change"
 function testClicked(count: number) {
   console.log('New clickCount:', count);
 }
 
-export interface Produit {
-  id: number;
-  nom: string;
-  prix: number;
-  slide: number;
-  images: string[];
-}
+// Catégorie sélectionnée par défaut
+const selectedCategorie = ref('Toutes');
 
-const produits = ref<Produit[]>([
-  {
-    id: 1,
-    nom: 'Canapé Oslo',
-    prix: 1500,
-    slide: 0,
-    images: ['/images/products/1/front.jpg', '/images/products/1/back.jpg'],
-  },
-  {
-    id: 2,
-    nom: 'Canapé Milan',
-    prix: 1200,
-    slide: 0,
-    images: ['/images/products/2/front.jpg', '/images/products/2/back.jpg'],
-  },
-  {
-    id: 3,
-    nom: 'Canapé Luna',
-    prix: 1000,
-    slide: 0,
-    images: ['/images/products/3/front.jpg', '/images/products/3/back.jpg'],
-  },
-  {
-    id: 4,
-    nom: 'Canapé Nova',
-    prix: 800,
-    slide: 0,
-    images: ['/images/products/4/front.jpg', '/images/products/4/back.jpg'],
-  },
-  {
-    id: 5,
-    nom: 'Canapé Tokyo',
-    prix: 600,
-    slide: 0,
-    images: ['/images/products/5/front.jpg', '/images/products/5/back.jpg'],
-  },
-  {
-    id: 6,
-    nom: 'Canapé Berlin',
-    prix: 500,
-    slide: 0,
-    images: ['/images/products/6/front.jpg', '/images/products/6/back.jpg'],
-  },
-]);
+// Page actuelle
+const current = ref(1);
 
-function onItemClick() {
-  console.log('Menu item clicked');
-}
+// Nombre de produits affichés par page
+const produitsParPage = 4;
 
 async function goHome() {
   await router.push('/');
@@ -188,11 +180,30 @@ async function goToPanier() {
   await router.push('/panier');
 }
 
-async function goToPage2() {
-  await router.push('/page2');
+// Fonction qui change la catégorie sélectionnée
+function filtrerParCategorie(categorie: string) {
+  selectedCategorie.value = categorie;
+  current.value = 1;
 }
 
-async function goToProduit() {
-  await router.push('/produit');
-}
+// Liste filtrée selon la catégorie choisie
+const produitsFiltres = computed(() => {
+  if (selectedCategorie.value === 'Toutes') {
+    return produits.value;
+  }
+
+  return produits.value.filter((produit) => produit.categorie === selectedCategorie.value);
+});
+
+// Nombre total de pages
+const nombrePages = computed(() => {
+  return Math.ceil(produitsFiltres.value.length / produitsParPage);
+});
+
+// Produits affichés sur la page actuelle
+const produitsPagines = computed(() => {
+  const debut = (current.value - 1) * produitsParPage;
+  const fin = debut + produitsParPage;
+  return produitsFiltres.value.slice(debut, fin);
+});
 </script>

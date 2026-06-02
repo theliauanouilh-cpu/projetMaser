@@ -1,22 +1,29 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 
-interface ProduitPanier {
-  id: number;
-  nom: string;
-  prix: number;
-}
-
 interface PanierItem {
   id: number;
   quantity: number;
   nom: string;
   prix: number;
+  categorie: string;
+  description: string;
+}
+
+export interface Produit {
+  id: number;
+  nom: string;
+  prix: number;
+  slide: number;
+  images: string[];
+  categorie?: string;
+  description?: string;
 }
 
 export const useCounterStore = defineStore('counter', {
   state: () => ({
     clickCount: 0,
     panier: [] as PanierItem[],
+    products: [] as Produit[],
   }),
 
   getters: {
@@ -36,7 +43,7 @@ export const useCounterStore = defineStore('counter', {
       this.clickCount = 0;
     },
 
-    addToPanier(produit: ProduitPanier) {
+    addToPanier(produit: Produit) {
       const existingItem = this.panier.find((item) => item.id === produit.id);
 
       if (existingItem) {
@@ -45,8 +52,10 @@ export const useCounterStore = defineStore('counter', {
         this.panier.push({
           id: produit.id,
           nom: produit.nom,
-          prix: produit.prix,
+          prix: produit.prix ?? 0,
           quantity: 1,
+          categorie: produit.categorie ?? '',
+          description: produit.description ?? '',
         });
       }
     },
