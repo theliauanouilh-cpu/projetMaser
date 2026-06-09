@@ -8,19 +8,27 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         component: () => import('pages/IndexPage.vue'),
-      },
-      {
-        path: 'produit/:id?',
-        component: () => import('pages/ProduitPage.vue'),
         props: true,
       },
       {
         path: 'panier',
         component: () => import('pages/PanierPage.vue'),
       },
-      
+      {
+        path: 'pay',
+        component: () => import('pages/PaymentPage.vue'),
+      },
+      {
+        path: 'client',
+        component: () => import('pages/ClientPage.vue'),
+      },
+       {
+        path: 'inscription', 
+        component: () => import('pages/RegistrationPage.vue')
+      }
     ],
   },
 ];
 
 export default routes;
+

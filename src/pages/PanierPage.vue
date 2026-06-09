@@ -10,9 +10,6 @@
           <div class="text-subtitle2 text-center q-mb-md">Menu</div>
 
           <q-list bordered padding>
-            <q-item clickable v-ripple @click="goHome">
-              <q-item-section>Accueil</q-item-section>
-            </q-item>
 
             <q-item clickable v-ripple @click="goToProduit">
               <q-item-section>Produit</q-item-section>
@@ -22,35 +19,90 @@
               <q-item-section>Panier</q-item-section>
             </q-item>
 
-            <q-item clickable v-ripple>
+            <q-item clickable v-ripple @click="goToClient">
               <q-item-section>Service client</q-item-section>
             </q-item>
           </q-list>
         </div>
       </div>
-
+ 
       <!-- Contenu à droite -->
       <div class="col q-pa-md">
-        <h1>Voici votre panier :</h1>
+        <div class="col-12 col-md-4">
+          <q-card>
+            <q-card-section>
+              <div class="text-h6">Panier ({{ userStore.panierCount }})</div>
+            </q-card-section>
 
-        <div class="q-mb-md">
-          {{ counterStore.panier }}
-          Total : {{ totalPanier() }} €
-        </div>
+            <q-separator />
 
-        <div class="q-gutter-sm">
-          <q-btn v-if="articleDansPanier(1)" color="red" label="SUPP 1" @click="counterStore.deleteFromPanier(1)" />
-          <q-btn v-if="articleDansPanier(2)" color="red" label="SUPP 2" @click="counterStore.deleteFromPanier(2)" />
-          <q-btn v-if="articleDansPanier(3)" color="red" label="SUPP 3" @click="counterStore.deleteFromPanier(3)" />
-          <q-btn v-if="articleDansPanier(4)" color="red" label="SUPP 4" @click="counterStore.deleteFromPanier(4)" />
-          <q-btn v-if="articleDansPanier(5)" color="red" label="SUPP 5" @click="counterStore.deleteFromPanier(5)" />
-          <q-btn v-if="articleDansPanier(6)" color="red" label="SUPP 6" @click="counterStore.deleteFromPanier(6)" />
-          <q-btn v-if="articleDansPanier(7)" color="red" label="SUPP 7" @click="counterStore.deleteFromPanier(7)" />
-          <q-btn v-if="articleDansPanier(8)" color="red" label="SUPP 8" @click="counterStore.deleteFromPanier(8)" />
-          <q-btn v-if="articleDansPanier(9)" color="red" label="SUPP 9" @click="counterStore.deleteFromPanier(9)" />
-          <q-btn v-if="articleDansPanier(10)" color="red" label="SUPP 10" @click="counterStore.deleteFromPanier(10)" />
-          <q-btn v-if="articleDansPanier(11)" color="red" label="SUPP 11" @click="counterStore.deleteFromPanier(11)" />
-          <q-btn v-if="articleDansPanier(12)" color="red" label="SUPP 12" @click="counterStore.deleteFromPanier(12)" />
+            <q-list>
+              <q-item v-for="item in userStore.data.panier" :key="item.id" clickable>
+                <q-item-section avatar>
+                  <q-img :src="getImageForItem(item.id)" style="width: 60px; height: 60px" />
+                </q-item-section>
+
+                <q-item-section>
+                  <q-item-label>{{ item.nom }}</q-item-label>
+                  <q-item-label caption
+                    >{{ item.prix.toFixed(2) }} € x {{ item.quantity }}
+                  </q-item-label>
+                </q-item-section>
+
+                <q-item-section side class="row items-center">
+                  <q-input filled 
+                  v-model="item.quantity" 
+                  type="number"
+                  dense
+                  >
+                    <template v-slot:before>
+                      <q-btn
+                      dense
+                      round
+                      icon="remove"
+                      size="9px"
+                      
+                      @click="userStore.decreaseQuantity(item.id)"
+                      />
+                    </template>
+                    <template v-slot:after>
+                      <q-btn
+                      dense
+                      round
+                      icon="add"
+                      size="9px"
+                      
+                      @click="userStore.increaseQuantity(item.id)"
+                      />
+                    </template>
+                  </q-input>
+                </q-item-section>
+                <q-item-section side class="row items-center">
+                  <q-btn
+                    dense
+                    round
+                    color="negative"
+                    icon="delete"
+                    @click="userStore.deleteFromPanier(item.id)"
+                    class="q-ml-sm"
+                  />
+                </q-item-section>
+              </q-item>
+              
+              <q-item v-if="userStore.data.panier.length === 0">
+                <q-item-section>Aucun article dans le panier.</q-item-section>
+              </q-item>
+            </q-list>
+
+            <q-separator />
+
+            <q-card-section>
+              <div class="text-subtitle1">Total: {{ userStore.panierTotal.toFixed(2) }} €</div>
+              <div class="q-mt-sm">
+                <q-btn color="secondary" label="Acheter" @click="goToPayment" />
+              </div>
+            </q-card-section>
+          </q-card>
         </div>
       </div>
     </div>
@@ -58,29 +110,36 @@
 </template>
 
 <script setup lang="ts">
-import { useCounterStore } from '../stores/example-store';
+import { ref } from 'vue';
+import { useUserStore } from '../stores/userStore';
 import { useRouter } from 'vue-router';
+import dataSet from '../../data/data.json';
 
 const router = useRouter();
-const counterStore = useCounterStore();
+const userStore = useUserStore();
 
-async function goHome() {
-  await router.push('/');
-}
+const produits = ref(dataSet);
+
 
 async function goToProduit() {
-  await router.push('/produit');
+  await router.push('/');
 }
 
 async function goToPanier() {
   await router.push('/panier');
 }
 
-function totalPanier() {
-  return counterStore.panier.reduce((total, item) => total + item.quantity * item.prix, 0);
+async function goToPayment() {
+  await router.push('/pay');
 }
 
-function articleDansPanier(id: number) {
-  return counterStore.panier.some(item => item.id === id);
+async function goToClient() {
+  await router.push('/client');
+}
+
+function getImageForItem(id: number) {
+  const p = produits.value.find((prod) => prod.id === id);
+  if (!p || !p.images || p.images.length === 0) return '';
+  return p.images[0];
 }
 </script>
