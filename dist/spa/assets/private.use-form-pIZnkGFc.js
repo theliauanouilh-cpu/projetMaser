@@ -1,0 +1,1 @@
+import{it as e,mt as t}from"./index-B4bVq9G6.js";var n={dark:{type:Boolean,default:null}};function r(t,n){return e(()=>t.dark===null?n.dark.isActive:t.dark)}var i={name:String};function a(e={}){return(n,r,i)=>{n[r](t(`input`,{class:`hidden`+(i||``),...e.value}))}}function o(t){return e(()=>t.name||t.for)}export{n as a,r as i,o as n,i as r,a as t};
