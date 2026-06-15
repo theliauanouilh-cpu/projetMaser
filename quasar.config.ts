@@ -44,6 +44,10 @@ export default defineConfig((/* ctx */) => {
       },
 
       vueRouterMode: 'hash', // available values: 'hash', 'history'
+      // Use a relative publicPath so asset URLs work when deploying the built
+      // `dist` folder to GitHub Pages or a subpath. Also set distDir explicitly
+      // to match the CI workflow which uploads `dist/spa`.
+      publicPath: './',
       // vueRouterBase,
       vueDevtools: true,
       // vueOptionsAPI: false,
@@ -59,7 +63,9 @@ export default defineConfig((/* ctx */) => {
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf (viteConf) {},
+      extendViteConf (viteConf) {
+        viteConf.base = ""
+      },
       // viteVuePluginOptions: {},
 
       vitePlugins: [
