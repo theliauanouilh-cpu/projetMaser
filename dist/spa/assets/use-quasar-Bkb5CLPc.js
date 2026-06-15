@@ -1,0 +1,1 @@
+import{ht as e}from"./index-Df17Q3rF.js";function t(){return e(`_q_`)}export{t};
