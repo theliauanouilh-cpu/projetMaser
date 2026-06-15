@@ -3,9 +3,9 @@ import { LocalStorage } from 'quasar';
 
 
 export interface State {
-  clickCount : number;
   panier     : PanierItem[];
   products   : Produit[];
+  customer   : Customer | null;
 }
 
 interface PanierItem {
@@ -15,6 +15,7 @@ interface PanierItem {
   prix        : number;
   categorie   : string;
   description : string;
+  taille      : string;
 }
 
 export interface Produit {
@@ -25,16 +26,30 @@ export interface Produit {
   images       : string[];
   categorie?   : string;
   description? : string;
+  taille?       : string;
 }
+
+export interface Customer {
+  nom: string;
+  email: string;
+  adresse: string;
+  ville: string;
+  codePostal: string;
+  telephone: string;
+  password: string;
+}
+
 
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    data: LocalStorage.getItem('user-data') ?? {
-      clickCount : 0,
-      panier     : [],
-      products   : [],
-    } as State,
+    data: LocalStorage.getItem('user-data') as State ?? {
+  panier: [],
+  products: [],
+  connected: null,
+},
+    quantity: 1,
+    selectedCategories: [] as string[],
   }),
 
   getters: {
@@ -45,33 +60,24 @@ export const useUserStore = defineStore('user', {
   },
 
   actions: {
-    incrementClick(addToPanier?: Produit) {
-      this.data.clickCount++;
 
-      if (addToPanier) {
-        this.addToPanier(addToPanier);
-      }
-    },
-
-    resetClick() {
-        this.data.clickCount = 0;
-    },
-
-    addToPanier(produit: Produit) {
+    addToPanier(produit: Produit, quantity: number = 1) {
       const existingItem = this.data.panier.find((item: PanierItem) => item.id === produit.id);
 
       if (existingItem) {
-        existingItem.quantity++;
+        existingItem.quantity += quantity;
       } else {
         this.data.panier.push({
           id          : produit.id,
           nom         : produit.nom,
           prix        : produit.prix ?? 0,
-          quantity    : 1,
+          quantity    : quantity,
           categorie   : produit.categorie ?? '',
           description : produit.description ?? '',
+          taille      : produit.taille ?? '',
         });
       }
+      this.quantity = 1;
     },
 
     deleteFromPanier(id: number) {
@@ -87,11 +93,9 @@ export const useUserStore = defineStore('user', {
 
       if (!item) return;
 
-      if (item.quantity > 1) {
+      if (item.quantity > 0) {
         item.quantity--;
-      } else {
-        this.deleteFromPanier(id);
-      }
+       }    
     },
 
     increaseQuantity(id: number) {
@@ -99,17 +103,20 @@ export const useUserStore = defineStore('user', {
 
       if (!item) return;
 
-      if (item.quantity > 0) {
+      if (item.quantity >= 0) {
         item.quantity++;
-      } else {
-        this.deleteFromPanier(id);
-      }
+      } 
     },
 
 
 
     clearPanier() {
       this.data.panier = [] as PanierItem[];
+    },
+
+    disconnect() {
+      this.data.customer = null;
+      LocalStorage.setItem('user-data', this.data);
     },
   },
 });

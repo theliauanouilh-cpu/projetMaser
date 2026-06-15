@@ -1,28 +1,7 @@
 <template>
   <q-page class="q-pa-md">
     <div class="row q-col-gutter-md">
-      <div class="col-auto">
-        <div
-          class="q-pa-md bg-grey-2 rounded-borders"
-          style="min-width: 220px; max-width: 260px; height: calc(100vh - 2rem)"
-        >
-          <div class="text-h6 text-center q-mb-lg">Menu</div>
-
-          <q-list bordered padding class="rounded-borders bg-white">
-            <q-item clickable v-ripple @click="goToProduit">
-              <q-item-section>Produit</q-item-section>
-            </q-item>
-
-            <q-item clickable v-ripple @click="goToPanier">
-              <q-item-section>Panier</q-item-section>
-            </q-item>
-
-            <q-item clickable v-ripple @click="goToClient">
-              <q-item-section>Service client</q-item-section>
-            </q-item>
-          </q-list>
-        </div>
-      </div>
+      
 
       <div class="col">
         <section class="bg-blue-grey-1 q-px-md q-py-xl rounded-borders">
@@ -120,9 +99,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted} from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar, QForm } from 'quasar'
+import { useUserStore } from '../stores/userStore';
+
+const userStore = useUserStore();
 
 const $q = useQuasar()
 const router = useRouter()
@@ -138,14 +120,6 @@ const form = reactive({
 
 async function goToProduit() {
   await router.push('/')
-}
-
-async function goToPanier() {
-  await router.push('/panier')
-}
-
-async function goToClient() {
-  await router.push('/client')
 }
 
 async function payOrder() {
@@ -168,4 +142,15 @@ function showNotif() {
     timeout: 3000
   })
 }
+
+function ifconnected() {
+  if (userStore.data.customer) {
+    form.nom = userStore.data.customer?.nom;
+    form.email = userStore.data.customer?.email;
+  }
+}
+
+onMounted(() => {
+  ifconnected()
+})
 </script>

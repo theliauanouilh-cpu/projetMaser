@@ -2,29 +2,7 @@
   <q-page class="page-menu" style="min-height: 100vh">
     <div class="row no-wrap" style="min-height: 100vh">
       <!-- Menu à gauche -->
-      <div class="col-auto q-pa-md">
-        <div
-          class="q-pa-sm bg-grey-2 rounded-borders"
-          style="min-width: 120px; max-width: 160px; height: calc(100vh - 2rem)"
-        >
-          <div class="text-subtitle2 text-center q-mb-md">Menu</div>
-
-          <q-list bordered padding>
-
-            <q-item clickable v-ripple @click="goToProduit">
-              <q-item-section>Produit</q-item-section>
-            </q-item>
-
-            <q-item clickable v-ripple @click="goToPanier">
-              <q-item-section>Panier</q-item-section>
-            </q-item>
-
-            <q-item clickable v-ripple @click="goToClient">
-              <q-item-section>Service client</q-item-section>
-            </q-item>
-          </q-list>
-        </div>
-      </div>
+      
  
       <!-- Contenu à droite -->
       <div class="col q-pa-md">
@@ -39,7 +17,7 @@
             <q-list>
               <q-item v-for="item in userStore.data.panier" :key="item.id" clickable>
                 <q-item-section avatar>
-                  <q-img :src="getImageForItem(item.id)" style="width: 60px; height: 60px" />
+                  <q-img :src="getImageForItem(item.id)" style="width: 70px; height: 70px" fit="contain"/>
                 </q-item-section>
 
                 <q-item-section>
@@ -51,9 +29,12 @@
 
                 <q-item-section side class="row items-center">
                   <q-input filled 
-                  v-model="item.quantity" 
-                  type="number"
-                  dense
+                    v-model="item.quantity" 
+                    type="number"
+                    style="width:130px"
+                    dense
+                     min="1"
+                     max="10"
                   >
                     <template v-slot:before>
                       <q-btn
@@ -61,7 +42,6 @@
                       round
                       icon="remove"
                       size="9px"
-                      
                       @click="userStore.decreaseQuantity(item.id)"
                       />
                     </template>
@@ -70,8 +50,7 @@
                       dense
                       round
                       icon="add"
-                      size="9px"
-                      
+                      size="9px"                     
                       @click="userStore.increaseQuantity(item.id)"
                       />
                     </template>
@@ -99,7 +78,7 @@
             <q-card-section>
               <div class="text-subtitle1">Total: {{ userStore.panierTotal.toFixed(2) }} €</div>
               <div class="q-mt-sm">
-                <q-btn color="secondary" label="Acheter" @click="goToPayment" />
+                <q-btn color="secondary" label="Acheter" @click="goToPayment" v-if="userStore.panierTotal > 0"/>
               </div>
             </q-card-section>
           </q-card>
@@ -108,34 +87,24 @@
     </div>
   </q-page>
 </template>
-
+ 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useUserStore } from '../stores/userStore';
 import { useRouter } from 'vue-router';
-import dataSet from '../../data/data.json';
+import productList from '../../data/products.json';
+
 
 const router = useRouter();
 const userStore = useUserStore();
 
-const produits = ref(dataSet);
+const produits = ref(productList);
 
-
-async function goToProduit() {
-  await router.push('/');
-}
-
-async function goToPanier() {
-  await router.push('/panier');
-}
 
 async function goToPayment() {
   await router.push('/pay');
 }
 
-async function goToClient() {
-  await router.push('/client');
-}
 
 function getImageForItem(id: number) {
   const p = produits.value.find((prod) => prod.id === id);

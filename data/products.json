@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "nom": "Canapé Oslo",
+    "categorie": "Blanc",
+    "prix": 1500,
+    "slide": 0,
+    "images": ["/images/products/1/front.jpg", "/images/products/1/back.jpg"],
+    "description": "Canapé spacieux au design scandinave, idéal pour un salon moderne et lumineux.",
+    "taille": "L 240 x P 95 x H 85 cm"
+  },
+  {
+    "id": 2,
+    "nom": "Canapé Milan",
+    "categorie": "Marron",
+    "prix": 1200,
+    "slide": 0,
+    "images": ["/images/products/2/front.jpg", "/images/products/2/back.jpg"],
+    "description": "Canapé élégant en ton marron, pensé pour offrir un bon confort au quotidien.",
+    "taille": "L 220 x P 90 x H 84 cm"
+  },
+  {
+    "id": 3,
+    "nom": "Canapé Luna",
+    "categorie": "Marron",
+    "prix": 1000,
+    "slide": 0,
+    "images": ["/images/products/3/front.jpg", "/images/products/3/back.jpg"],
+    "description": "Modèle compact et chaleureux, parfait pour créer une ambiance cosy dans le séjour.",
+    "taille": "L 200 x P 88 x H 82 cm"
+  },
+  {
+    "id": 4,
+    "nom": "Canapé Nova",
+    "categorie": "Vert",
+    "prix": 800,
+    "slide": 0,
+    "images": ["/images/products/4/front.jpg", "/images/products/4/back.jpg"],
+    "description": "Canapé moderne et pratique, avec une assise confortable adaptée aux petits espaces.",
+    "taille": "L 190 x P 85 x H 80 cm"
+  },
+  {
+    "id": 5,
+    "nom": "Canapé Tokyo",
+    "categorie": "Noir",
+    "prix": 600,
+    "slide": 0,
+    "images": ["/images/products/5/front.jpg", "/images/products/5/back.jpg"],
+    "description": "Canapé sobre et contemporain, facile à intégrer dans une décoration urbaine.",
+    "taille": "L 180 x P 82 x H 78 cm"
+  },
+  {
+    "id": 6,
+    "nom": "Canapé Berlin",
+    "categorie": "Vert",
+    "prix": 500,
+    "slide": 0,
+    "images": ["/images/products/6/front.jpg", "/images/products/6/back.jpg"],
+    "description": "Modèle simple et fonctionnel, idéal pour un coin détente discret et efficace.",
+    "taille": "L 175 x P 80 x H 78 cm"
+  },
+  {
+    "id": 7,
+    "nom": "Canapé Paris",
+    "categorie": "Blanc",
+    "prix": 700,
+    "slide": 0,
+    "images": ["/images/products/7/front.jpg", "/images/products/7/back.jpg"],
+    "description": "Canapé raffiné au coloris clair, apportant de la luminosité à la pièce.",
+    "taille": "L 185 x P 84 x H 79 cm"
+  },
+  {
+    "id": 8,
+    "nom": "Canapé Rome",
+    "categorie": "Vert",
+    "prix": 900,
+    "slide": 0,
+    "images": ["/images/products/8/front.jpg", "/images/products/8/back.jpg"],
+    "description": "Canapé au style naturel et actuel, offrant un bon équilibre entre confort et élégance.",
+    "taille": "L 205 x P 89 x H 83 cm"
+  },
+  {
+    "id": 9,
+    "nom": "Canapé Madrid",
+    "categorie": "Blanc",
+    "prix": 1100,
+    "slide": 0,
+    "images": ["/images/products/9/front.jpg", "/images/products/9/back.jpg"],
+    "description": "Grand canapé chic et accueillant, parfait pour les moments conviviaux en famille.",
+    "taille": "L 225 x P 92 x H 84 cm"
+  },
+  {
+    "id": 10,
+    "nom": "Canapé Sydney",
+    "categorie": "Marron",
+    "prix": 1300,
+    "slide": 0,
+    "images": ["/images/products/10/front.jpg", "/images/products/10/back.jpg"],
+    "description": "Canapé haut de gamme au style chaleureux, conçu pour un confort généreux.",
+    "taille": "L 230 x P 94 x H 85 cm"
+  },
+  {
+    "id": 11,
+    "nom": "Canapé Amsterdam",
+    "categorie": "Noir",
+    "prix": 1400,
+    "slide": 0,
+    "images": ["/images/products/11/front.jpg", "/images/products/11/back.jpg"],
+    "description": "Canapé élégant et profond, idéal pour un intérieur moderne au look affirmé.",
+    "taille": "L 235 x P 96 x H 86 cm"
+  },
+  {
+    "id": 12,
+    "nom": "Canapé Lisbonne",
+    "categorie": "Noir",
+    "prix": 1600,
+    "slide": 0,
+    "images": ["/images/products/12/front.jpg", "/images/products/12/back.jpg"],
+    "description": "Modèle premium, spacieux et confortable, pensé pour habiller un grand salon.",
+    "taille": "L 245 x P 98 x H 87 cm"
+  }
+]

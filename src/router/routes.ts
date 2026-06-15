@@ -23,12 +23,16 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/ClientPage.vue'),
       },
        {
+        path: 'connection', 
+        component: () => import('pages/ConnectionPage.vue')
+      },
+      {
         path: 'inscription', 
         component: () => import('pages/RegistrationPage.vue')
       }
     ],
   },
 ];
-
+ 
 export default routes;
 

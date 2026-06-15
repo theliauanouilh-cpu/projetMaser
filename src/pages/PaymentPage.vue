@@ -20,6 +20,19 @@
 
               <div class="col-12">
                 <q-input
+                  v-model="form.email"
+                  outlined
+                  type="email"
+                  label="Email"
+                  placeholder="votre@email.fr"
+                  color="primary"
+                  bg-color="white"
+                  :rules="[(val) => !!val || 'L\'email est obligatoire']"
+                />
+              </div>
+
+              <div class="col-12">
+                <q-input
                   v-model="form.adresse"
                   outlined
                   label="Adresse"
@@ -60,7 +73,7 @@
                   type="tel"
                   :rules="[
                     (val) => !!val || 'Le téléphone est obligatoire',
-                    (val) => val.length >= 10 || 'Le téléphone est trop court',
+                    (val) => val.length >= 9 || 'Le téléphone est trop court',
                   ]"
                 />
               </div>
@@ -195,10 +208,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useUserStore } from '../stores/userStore';
 import { useRouter } from 'vue-router';
 import { useQuasar, QForm } from 'quasar';
+
+
 
 const $q = useQuasar();
 const userStore = useUserStore();
@@ -211,6 +226,7 @@ const formStep3 = ref<QForm | null>(null);
 
 const form = ref({
   nom: '',
+  email: '',
   adresse: '',
   ville: '',
   codePostal: '',
@@ -257,9 +273,7 @@ function nextStep2() {
 async function payOrder() {
   const isValid = await formStep3.value?.validate();
 
-  if (!isValid) {
-    return;
-  }
+  if (!isValid) return;
 
   showNotif();
   clearPanier();
@@ -279,4 +293,19 @@ function showNotif() {
 function clearPanier() {
   userStore.clearPanier();
 }
+
+function ifconnected() {
+  if (userStore.data.customer) {
+    form.value.nom = userStore.data.customer?.nom;
+    form.value.email = userStore.data.customer?.email;
+    form.value.adresse = userStore.data.customer?.adresse;
+    form.value.ville = userStore.data.customer?.ville;
+    form.value.codePostal = userStore.data.customer?.codePostal;
+    form.value.telephone = userStore.data.customer?.telephone;
+  }
+}
+
+onMounted(() => {
+  ifconnected()
+})
 </script>

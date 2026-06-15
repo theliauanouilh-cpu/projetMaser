@@ -32,6 +32,20 @@
 
               <div class="col-12">
                 <q-input
+                  v-model="form.password"
+                  outlined
+                  label="Mot de passe"
+                  placeholder="********"
+                  type="password"
+                  :rules="[
+                    (val) => !!val || 'Le mot de passe est obligatoire',
+                    (val) => val.length >= 6 || 'Le mot de passe doit contenir au moins 6 caractères',
+                  ]"
+                />
+                </div>
+
+              <div class="col-12">
+                <q-input
                   v-model="form.adresse"
                   outlined
                   label="Adresse"
@@ -79,10 +93,15 @@
 
               <div class="col-12 q-mt-sm row q-gutter-sm">
                 <q-btn
-                  label="Enregistrer et continuer"
-                  color="primary"
-                  @click="saveForm"
-                />
+                unelevated
+                color="primary"
+                label="Envoyer le message"
+                icon-right="send"
+                class="full-width"
+                size="md"
+                type="submit"
+                @click="saveForm()"
+              />
               </div>
 
             </q-form>
@@ -97,12 +116,15 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted } from 'vue'
 import { LocalStorage } from 'quasar'
+import { useRouter } from 'vue-router'
 
 const step = ref(1)
+const router = useRouter()
 
 const form = reactive({
   nom: '',
   email: '',
+  password: '',
   adresse: '',
   ville: '',
   codePostal: '',
@@ -116,8 +138,15 @@ onMounted(() => {
   }
 })
 
-function saveForm() {
+async function saveForm() {
   LocalStorage.set('form-inscription', form)
   step.value = 2
+  await goToProduit()
 }
+
+async function goToProduit() {
+  await router.push('/')
+}
+
+
 </script>

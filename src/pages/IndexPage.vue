@@ -1,42 +1,13 @@
 <template>
   <q-page class="page-menu" style="min-height: 100vh">
+
+    <button @click="getUsers()">get</button>
+    {{ users }}
+
+
+
     <div class="row no-wrap" style="min-height: 100vh">
-      <!-- Sidebar -->
-      <div class="col-auto q-pa-md">
-        <div
-          class="q-pa-md bg-grey-2 rounded-borders"
-          style="min-width: 220px; max-width: 260px; height: calc(100vh - 2rem)"
-        >
-          <div class="text-h6 text-center q-mb-lg">Menu</div>
-
-          <q-list bordered padding class="rounded-borders bg-white">
-
-            <q-item clickable v-ripple @click="goToProduit">
-              <q-item-section>Produit</q-item-section>
-            </q-item>
-
-            <q-item clickable v-ripple @click="goToPanier">
-              <q-item-section>Panier</q-item-section>
-            </q-item>
-
-            <q-item clickable v-ripple @click="goToClient">
-              <q-item-section>Service client</q-item-section>
-            </q-item>
-          </q-list>
-
-          <!-- Catégories -->
-          <div class="q-pa-md">
-            <div class="text-subtitle2 q-mb-sm">Catégories</div>
-
-            <q-option-group
-              v-model="group"
-              :options="options"
-              type="checkbox"
-            />
-          </div>
-        </div>
-      </div>
-
+      
       <!-- Partie droite : affichage des produits -->
       <div class="col q-pa-lg">
         <div class="row q-col-gutter-lg">
@@ -53,46 +24,68 @@
                 navigation
                 infinite
                 height="250px"
-                class="bg-grey-2"
+                class="bg-white-2"
+                control-color="grey"    
               >
-                <q-carousel-slide :name="0">
-                  <q-img
-                    :src="produit.images[0]"
-                    fit="contain"
-                    height="250px"
-                  />
-                </q-carousel-slide>
-
-                <q-carousel-slide :name="1">
-                  <q-img
-                    :src="produit.images[1]"
-                    fit="contain"
-                    height="250px"
-                  />
-                </q-carousel-slide>
+                <template v-for="(image, index) in produit.images" :key="index">
+                  <q-carousel-slide :name="index" style="overflow: hidden;">
+                    <q-img
+                      :src="image"
+                      fit="contain"
+                      height="250px"
+                    />
+                  </q-carousel-slide>
+                </template>
               </q-carousel>
 
+
               <q-card-section>
-                <div class="text-h6">{{ produit.nom }}</div>
-                <div class="text-caption text-grey-7">ID : {{ produit.id }}</div>
+                <q-separators color="grey-6" />
+                
+                <div class="row text-h6" >
+                    <div class="col"> {{ produit.nom }} </div>
+                    <div class="col text-right" > {{ produit.prix.toFixed(2) }} € </div>
+                </div>
+
 
                 <div v-if="produit.categorie" class="text-caption text-grey-7">
                   Catégorie : {{ produit.categorie }}
                 </div>
 
-                <div class="text-h5">{{ produit.prix.toFixed(2) }} €</div>
+
+                <div v-if="produit.categorie" class="text-caption text-grey-7">
+                  Dimension : {{ produit.taille }}
+                </div>
+
+
+                <div v-if="produit.categorie" class="text-caption text-grey-7">
+                 {{ produit.description }}
+                </div>
+
+
+                
               </q-card-section>
 
+
               <q-card-actions align="right">
+                 <q-input filled 
+                  v-model.number="userStore.quantity" 
+                  type="number"
+                  style="width:70px"
+                  dense
+                  min="1"
+                  max="10"
+                  ></q-input> 
                 <q-btn
                   color="primary"
                   label="Ajouter au panier"
-                  @click="userStore.addToPanier(produit)"
+                  @click="userStore.addToPanier(produit, userStore.quantity), showNotif()"
                 />
               </q-card-actions>
             </q-card>
           </div>
         </div>
+
 
         <!-- Pagination -->
         <div class="q-pa-lg flex flex-center">
@@ -109,6 +102,7 @@
     </div>
   </q-page>
 
+
    <footer class="bg-grey-3 q-px-md q-py-xl q-mt-md rounded-borders">
           <div class="row q-col-gutter-lg items-start">
             <div class="col-12 col-md-6">
@@ -118,6 +112,7 @@
               </div>
             </div>
 
+
             <div class="col-12 col-md-6">
               <div class="column q-gutter-sm">
                 <div class="text-body2">Téléphone : 01 23 45 67 89</div>
@@ -126,31 +121,25 @@
               </div>
             </div>
           </div>
-        </footer>
+    </footer>
         
 </template>
 
+
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import dataSet from '../../data/data.json';
+import productList from '../../data/products.json';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '../stores/userStore';
+import { useQuasar} from 'quasar';
 
-const produits = ref(dataSet);
 
-const router = useRouter();
+import { getApiUsers } from '../api/api';
+
+const $q        = useQuasar();
+const produits  = ref(productList);
+const router    = useRouter();
 const userStore = useUserStore();
-
-// Tableau des catégories cochées
-const group = ref<string[]>([]);
-
-// Options du q-option-group
-const options = [
-  { label: 'Noir', value: 'Noir' },
-  { label: 'Vert', value: 'Vert' },
-  { label: 'Marron', value: 'Marron' },
-  { label: 'Blanc', value: 'Blanc' },
-];
 
 // Page actuelle
 const current = ref(1);
@@ -158,34 +147,27 @@ const current = ref(1);
 // Nombre de produits affichés par page
 const produitsParPage = 4;
 
- 
-async function goToPanier() {
-  await router.push('/panier');
-}
 
-async function goToProduit() {
-  await router.push('/');
-}
 
-async function goToClient() {
-  await router.push('/client');
-}
+
 
 // Produits filtrés selon les catégories cochées
 const produitsFiltres = computed(() => {
-  if (group.value.length === 0) {
+  if (userStore.selectedCategories.length === 0) {
     return produits.value;
   }
 
   return produits.value.filter((produit) =>
-    group.value.includes(produit.categorie)
+    userStore.selectedCategories.includes(produit.categorie)
   );
 });
+
 
 // Nombre total de pages
 const nombrePages = computed(() => {
   return Math.ceil(produitsFiltres.value.length / produitsParPage) || 1;
 });
+
 
 // Produits affichés sur la page actuelle
 const produitsPagines = computed(() => {
@@ -193,6 +175,38 @@ const produitsPagines = computed(() => {
   const fin = debut + produitsParPage;
   return produitsFiltres.value.slice(debut, fin);
 });
-</script>
 
- 
+
+function showNotif() {
+  $q.notify({
+    message: `Vous avez ${userStore.panierCount} articles dans le panier`,
+    position: 'top',
+    color: 'primary',
+    actions: [
+      {
+        label: 'Aller au panier',
+        color: 'white',
+        handler: () => {
+          void router.push('/panier');
+        }
+      },
+      {
+        label: 'Continuer mes achats',
+        color: 'white',
+        handler: () => {
+          /* ... */
+        }
+      }
+    ]
+  });
+}
+
+const users = ref()
+//#region database
+async function getUsers() {
+  users.value = await getApiUsers()
+}
+
+//#endregion
+
+</script>    
