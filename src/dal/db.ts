@@ -7,7 +7,7 @@ import productList from '../../data/products.json';
 //#endregion
 
 //#region Init
-const db = new Dexie('CustomersDatabase') as Dexie & {
+const db = new Dexie('SofaLandDatabase') as Dexie & {
   customers: EntityTable<Customer, 'id'>;
   produits: EntityTable<Produit, 'id'>;
 };

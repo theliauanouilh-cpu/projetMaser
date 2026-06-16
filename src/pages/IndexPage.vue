@@ -7,7 +7,7 @@
 
 
     <div class="row no-wrap" style="min-height: 100vh">
-      
+
       <!-- Partie droite : affichage des produits -->
       <div class="col q-pa-lg">
         <div class="row q-col-gutter-lg">
@@ -25,7 +25,7 @@
                 infinite
                 height="250px"
                 class="bg-white-2"
-                control-color="grey"    
+                control-color="grey"
               >
                 <template v-for="(image, index) in produit.images" :key="index">
                   <q-carousel-slide :name="index" style="overflow: hidden;">
@@ -41,7 +41,7 @@
 
               <q-card-section>
                 <q-separators color="grey-6" />
-                
+
                 <div class="row text-h6" >
                     <div class="col"> {{ produit.nom }} </div>
                     <div class="col text-right" > {{ produit.prix.toFixed(2) }} € </div>
@@ -63,19 +63,19 @@
                 </div>
 
 
-                
+
               </q-card-section>
 
 
               <q-card-actions align="right">
-                 <q-input filled 
-                  v-model.number="userStore.quantity" 
+                 <q-input filled
+                  v-model.number="userStore.quantity"
                   type="number"
                   style="width:70px"
                   dense
                   min="1"
                   max="10"
-                  ></q-input> 
+                  ></q-input>
                 <q-btn
                   color="primary"
                   label="Ajouter au panier"
@@ -122,7 +122,7 @@
             </div>
           </div>
     </footer>
-        
+
 </template>
 
 
@@ -198,4 +198,4 @@ async function chargerProduits() {
 onMounted(() => {
   void chargerProduits();
 });
-</script>    
+</script>

@@ -1,0 +1,56 @@
+# Auto-detected text/binary and sensible defaults for this web project
+* text=auto
+
+# Ensure source files use LF line endings in the repository
+*.js      text eol=lf
+*.ts      text eol=lf
+*.vue     text eol=lf
+*.css     text eol=lf
+*.scss    text eol=lf
+*.html    text eol=lf
+*.json    text eol=lf
+*.md      text eol=lf
+*.yml     text eol=lf
+*.yaml    text eol=lf
+*.xml     text eol=lf
+
+# Shell scripts should use LF
+*.sh      text eol=lf
+
+# PowerShell prefers CRLF on Windows
+*.ps1     text eol=crlf
+
+# Treat common images and archives as binary
+*.png     binary
+*.jpg     binary
+*.jpeg    binary
+*.gif     binary
+*.ico     binary
+*.pdf     binary
+*.zip     binary
+*.gz      binary
+
+# SVGs are XML/text so keep them as text for diffs
+*.svg     text
+
+# Project-specific asset folders (avoid diffs for binary assets)
+/public/images/** binary
+/public/icons/** binary
+src/assets/** binary
+
+# Minified files: avoid text diffs and merges
+*.min.js  binary
+*.min.css binary
+
+# Lockfiles and package manager files
+pnpm-lock.yaml text eol=lf
+package-lock.json text eol=lf
+yarn.lock text eol=lf
+
+# Build outputs and dependencies should not be included in archives
+/node_modules/** export-ignore
+/dist/** export-ignore
+/build/** export-ignore
+
+# Make project data files explicit text
+/data/*.json text eol=lf
