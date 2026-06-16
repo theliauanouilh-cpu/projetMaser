@@ -52,74 +52,76 @@
 </template>
 
 <script setup lang="ts">
-import { ref  } from 'vue'
+import { ref, reactive } from 'vue'
 import { useUserStore } from '../stores/userStore';
 import { useRouter } from 'vue-router';
-import customerList from '../../data/customers.json'
+// import customerList from '../../data/customers.json'
 import { useQuasar, QForm } from 'quasar';
+import * as bll from '../bll/bll';
 
 const $q = useQuasar();
 const router = useRouter();
-const customers = ref(customerList)
+// const customers = ref(customerList)
 const userStore = useUserStore()
 const step = ref(1)
 const formStep1 = ref<QForm | null>(null)
 
-const form = ref({
-  email      : '',
-  password   : '',
+const form = reactive({
+  email: '',
+  password: '',
 });
 
 function resetForm() {
-  form.value.email = '';
-  form.value.password = '';
+  form.email = '';
+  form.password = '';
   formStep1.value?.resetValidation();
 }
 
-
 async function goToProduit() {
-  await router.push('/')
+  await router.push('/');
 }
 
 
 async function authentication() {
-  const customer = customers.value.find((c) => {
-    return c.email === form.value.email && c.password === form.value.password;
-  })
-  
-  
+  const users = await bll.getUsers();
+  const customer = users.find((u) => u.email === form.email && u.password === form.password);
 
-  
-  console.log(customer)
+  console.log(customer);
 
   if (customer) {
-    userStore.data.customer = customer
-
-    await goToProduit()
-
+    userStore.data.customer = {
+      id: 0,
+      name: customer.name,
+      email: customer.email,
+      adresse: customer.adresse,
+      ville: customer.ville,
+      codePostal: customer.codePostal,
+      telephone: customer.telephone,
+      password: customer.password,
+    };
     $q.notify({
-    type: 'positive',
-    message: 'Vous êtes bien connecté !!!',
-    color: 'green',
-    progress: true,
-    timeout: 3000,
-  });
-
+      type: 'positive',
+      message: 'Vous êtes bien connecté !!!',
+      color: 'green',
+      progress: true,
+      timeout: 3000,
+    });
+    await goToProduit();
   }
-  else{
-
+  else {
     $q.notify({
-    type: 'positive',
-    position: 'top',
-    message: 'Identifiant ou mot de passe incorect',
-    color: 'red',
-    progress: true,
-    timeout: 3000,
-  });
+      type: 'negative',
+      position: 'top',
+      message: 'Identifiant ou mot de passe incorrect',
+      color: 'red',
+      progress: true,
+      timeout: 3000,
+    });
 
-  resetForm();
+    resetForm();
   }
 }
+
 
 
 

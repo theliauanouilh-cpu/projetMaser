@@ -27,7 +27,7 @@
                   placeholder="votre@email.fr"
                   color="primary"
                   bg-color="white"
-                  :rules="[(val) => !!val || 'L\'email est obligatoire']"
+                  :rules="[(val) => !!val || 'obligatoire']"
                 />
               </div>
 
@@ -296,7 +296,7 @@ function clearPanier() {
 
 function ifconnected() {
   if (userStore.data.customer) {
-    form.value.nom = userStore.data.customer?.nom;
+    form.value.nom = userStore.data.customer?.name;
     form.value.email = userStore.data.customer?.email;
     form.value.adresse = userStore.data.customer?.adresse;
     form.value.ville = userStore.data.customer?.ville;

@@ -1,5 +1,6 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import { LocalStorage } from 'quasar';
+import {type Customer, type Produit} from '../interfaces'
 
 
 export interface State {
@@ -18,26 +19,6 @@ interface PanierItem {
   taille      : string;
 }
 
-export interface Produit {
-  id           : number;
-  nom          : string;
-  prix         : number;
-  slide        : number;
-  images       : string[];
-  categorie?   : string;
-  description? : string;
-  taille?       : string;
-}
-
-export interface Customer {
-  nom: string;
-  email: string;
-  adresse: string;
-  ville: string;
-  codePostal: string;
-  telephone: string;
-  password: string;
-}
 
 
 

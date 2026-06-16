@@ -127,55 +127,43 @@
 
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import productList from '../../data/products.json';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '../stores/userStore';
-import { useQuasar} from 'quasar';
+import { useQuasar } from 'quasar';
+import { InitProduit } from '../dal/db';
+import { type Customer, type Produit } from '../interfaces';
+import * as bll from '../bll/bll';
 
-
-import { getApiUsers } from '../api/api';
-
-const $q        = useQuasar();
-const produits  = ref(productList);
-const router    = useRouter();
+const $q = useQuasar();
+const router = useRouter();
 const userStore = useUserStore();
 
-// Page actuelle
-const current = ref(1);
+const produits = ref<Produit[]>([]);
+const users = ref<Customer[]>([]);
 
-// Nombre de produits affichés par page
+const current = ref(1);
 const produitsParPage = 4;
 
-
-
-
-
-// Produits filtrés selon les catégories cochées
 const produitsFiltres = computed(() => {
   if (userStore.selectedCategories.length === 0) {
     return produits.value;
   }
 
   return produits.value.filter((produit) =>
-    userStore.selectedCategories.includes(produit.categorie)
+    userStore.selectedCategories.includes(produit.categorie ?? '')
   );
 });
 
-
-// Nombre total de pages
 const nombrePages = computed(() => {
   return Math.ceil(produitsFiltres.value.length / produitsParPage) || 1;
 });
 
-
-// Produits affichés sur la page actuelle
 const produitsPagines = computed(() => {
   const debut = (current.value - 1) * produitsParPage;
   const fin = debut + produitsParPage;
   return produitsFiltres.value.slice(debut, fin);
 });
-
 
 function showNotif() {
   $q.notify({
@@ -192,21 +180,22 @@ function showNotif() {
       },
       {
         label: 'Continuer mes achats',
-        color: 'white',
-        handler: () => {
-          /* ... */
-        }
+        color: 'white'
       }
     ]
   });
 }
 
-const users = ref()
-//#region database
 async function getUsers() {
-  users.value = await getApiUsers()
+  users.value = await bll.getUsers();
 }
 
-//#endregion
+async function chargerProduits() {
+  await InitProduit();
+  produits.value = await bll.getProduits();
+}
 
+onMounted(() => {
+  void chargerProduits();
+});
 </script>    

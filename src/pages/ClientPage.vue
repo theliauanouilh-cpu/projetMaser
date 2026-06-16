@@ -145,7 +145,7 @@ function showNotif() {
 
 function ifconnected() {
   if (userStore.data.customer) {
-    form.nom = userStore.data.customer?.nom;
+    form.nom = userStore.data.customer?.name;
     form.email = userStore.data.customer?.email;
   }
 }

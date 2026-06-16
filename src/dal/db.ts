@@ -1,66 +1,72 @@
 import { Dexie, type EntityTable } from 'dexie';
+import { type Customer, type Produit} from '../interfaces'
+import productList from '../../data/products.json';
 
 //#region Interfaces
-interface Friend {
-  id   : number;
-  name : string;
-  age  : number;
-}
 
-interface Adresse {
-  id          : number;
-  rue         : string;
-  codePostale : number;
-}
 //#endregion
 
 //#region Init
-const db = new Dexie('FriendsDatabase') as Dexie & {
-  friends: EntityTable<
-    Friend,
-    'id' // primary key "id" (for the typings only)
-  >;
-
-  adresses: EntityTable<
-    Adresse,
-    'id' // primary key "id" (for the typings only)
-  >;  
+const db = new Dexie('CustomersDatabase') as Dexie & {
+  customers: EntityTable<Customer, 'id'>;
+  produits: EntityTable<Produit, 'id'>;
 };
 
-// Schema declaration:
 db.version(1).stores({
-  friends : '++id, name, age', // primary key "id" (for the runtime!)
-  adresses: '++id, rue, codePostale' // primary key "id" (for the runtime!)
+  customers: '++id, name, email, password, adresse, ville, codePostal, telephone',
+  produits: 'id, nom, prix, slide, images, categorie, description, taille'
 });
 //#endregion
 
 //#region Functions
-async function addDbFriend(name: string, age : number) : Promise<number> {
-  const id = await db.friends.add(
-    {
-      name: name,
-      age : age,
-    }    
-  )
+/**
+ * Add a user to the database : warning, does not check if user already exists
+ * @returns Newly created userId
+ */
+async function addDbCustomer(
+  name       : string,
+  telephone  : string,
+  email      : string,
+  adresse    : string,
+  ville      : string,
+  codePostal : string,
+  password   : string,
+): Promise<number> {
+  const customerExists = await db.customers.where({email: email, password: password }).toArray()
 
-  await db.adresses.add(
-    {
-      rue         : "un test",
-      codePostale : 31000,
-    }    
-  )  
-  
-  return id;
+  console.log(customerExists)
+  if (customerExists.length > 0) {
+    throw new Error('Customer exists already')
+  }
+
+  return await db.customers.add({
+    name,
+    telephone,
+    email,
+    adresse,
+    ville,
+    codePostal,
+    password
+  });
 }
 
-async function getDbFriendByAge(ageMin : number, ageMax : number) {
-  return await db.friends.where("age").between(ageMin, ageMax).toArray()
+async function InitProduit(): Promise<void> {
+  const count = await db.produits.count();
+
+  if (count > 0) return;
+
+  await db.produits.bulkPut(productList);
 }
 
-async function getDbUsers() : Promise<Friend[]> {
-    return await db.friends.toArray()
+
+
+async function getDbUsers(): Promise<Customer[]> {
+  return await db.customers.toArray();
+}
+
+async function getDbProduit(): Promise<Produit[]>{
+  return await db.produits.toArray();
 }
 //#endregion
 
-export type { Friend, Adresse };
-export { db, addDbFriend, getDbFriendByAge, getDbUsers };
+export { db, addDbCustomer, getDbUsers, InitProduit, getDbProduit };

@@ -1,11 +1,10 @@
 <template>
   <q-page class="q-pa-md">
-    <q-stepper v-model="step" vertical color="primary" animated>
-
-      <q-step :name="1" title="Inscription" icon="local_shipping" :done="step > 1">
+ 
+    
         <q-card flat class="q-pa-sm">
           <q-card-section>
-            <q-form ref="formStep1" class="row q-col-gutter-md">
+            <q-form ref="formInscription" class="row q-col-gutter-md">
 
               <div class="col-12">
                 <q-input
@@ -95,7 +94,7 @@
                 <q-btn
                 unelevated
                 color="primary"
-                label="Envoyer le message"
+                label="S'inscrire"
                 icon-right="send"
                 class="full-width"
                 size="md"
@@ -107,19 +106,20 @@
             </q-form>
           </q-card-section>
         </q-card>
-      </q-step>
-
-    </q-stepper>
+   
   </q-page>
 </template>
 
 <script setup lang="ts">
 import { reactive, ref, onMounted } from 'vue'
 import { LocalStorage } from 'quasar'
-import { useRouter } from 'vue-router'
+import * as bll from '../bll/bll';
+import { QForm } from 'quasar';
 
 const step = ref(1)
-const router = useRouter()
+
+
+const formInscription = ref<QForm | null>(null);
 
 const form = reactive({
   nom: '',
@@ -133,20 +133,43 @@ const form = reactive({
 
 onMounted(() => {
   const savedForm = LocalStorage.getItem('form-inscription')
-  if (savedForm) {
+  if (savedForm) {    
     Object.assign(form, savedForm)
   }
 })
 
 async function saveForm() {
-  LocalStorage.set('form-inscription', form)
-  step.value = 2
-  await goToProduit()
-}
 
-async function goToProduit() {
-  await router.push('/')
+  //LocalStorage.set('form-inscription', form)
+  try {
+    const newCustomerId  = await bll.addCustomer(
+      form.nom,
+      form.telephone,
+      form.email,
+      form.adresse,
+      form.ville,
+      form.codePostal,
+      form.password
+    )
+    console.log(newCustomerId)
+  }
+  catch (e) {
+
+    console.log('oops', e)
+  }
+
+  const isValid = await formInscription.value?.validate();
+  if (isValid) {
+    step.value = 2;
+  }
 }
+  
+
+
+
+
+
+
 
 
 </script>
