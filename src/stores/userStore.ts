@@ -1,12 +1,12 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import { LocalStorage } from 'quasar';
-import {type Customer, type Produit} from '../interfaces'
-
+import { type Customer, type Produit } from '../interfaces';
 
 export interface State {
-  panier     : PanierItem[];
-  products   : Produit[];
-  customer   : Customer | null;
+  panier: PanierItem[];
+  products: Produit[];
+  customer: Customer | null;
+  language: string;
 }
 
 interface PanierItem {
@@ -19,16 +19,14 @@ interface PanierItem {
   taille      : string;
 }
 
-
-
-
 export const useUserStore = defineStore('user', {
   state: () => ({
-    data: LocalStorage.getItem('user-data') as State ?? {
-  panier: [],
-  products: [],
-  connected: null,
-},
+    data: (LocalStorage.getItem('user-data') as State) ?? {
+      panier: [],
+      products: [],
+      connected: null,
+      language: 'fr-FR',
+    },
     quantity: 1,
     selectedCategories: [] as string[],
   }),
@@ -37,11 +35,13 @@ export const useUserStore = defineStore('user', {
     panierCount: (state) =>
       state.data.panier.reduce((total: number, item: PanierItem) => total + item.quantity, 0),
     panierTotal: (state) =>
-      state.data.panier.reduce((total: number, item: PanierItem) => total + item.prix * item.quantity, 0),
+      state.data.panier.reduce(
+        (total: number, item: PanierItem) => total + item.prix * item.quantity,
+        0,
+      ),
   },
 
   actions: {
-
     addToPanier(produit: Produit, quantity: number = 1) {
       const existingItem = this.data.panier.find((item: PanierItem) => item.id === produit.id);
 
@@ -49,13 +49,13 @@ export const useUserStore = defineStore('user', {
         existingItem.quantity += quantity;
       } else {
         this.data.panier.push({
-          id          : produit.id,
-          nom         : produit.nom,
-          prix        : produit.prix ?? 0,
-          quantity    : quantity,
-          categorie   : produit.categorie ?? '',
-          description : produit.description ?? '',
-          taille      : produit.taille ?? '',
+          id: produit.id,
+          nom: produit.nom,
+          prix: produit.prix ?? 0,
+          quantity: quantity,
+          categorie: produit.categorie ?? '',
+          description: produit.description ?? '',
+          taille: produit.taille ?? '',
         });
       }
       this.quantity = 1;
@@ -76,7 +76,7 @@ export const useUserStore = defineStore('user', {
 
       if (item.quantity > 0) {
         item.quantity--;
-       }    
+      }
     },
 
     increaseQuantity(id: number) {
@@ -86,10 +86,8 @@ export const useUserStore = defineStore('user', {
 
       if (item.quantity >= 0) {
         item.quantity++;
-      } 
+      }
     },
-
-
 
     clearPanier() {
       this.data.panier = [] as PanierItem[];
@@ -98,6 +96,10 @@ export const useUserStore = defineStore('user', {
     disconnect() {
       this.data.customer = null;
       LocalStorage.setItem('user-data', this.data);
+    },
+
+    setLanguage(lang: string) {
+      this.data.language = lang;
     },
   },
 });

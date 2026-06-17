@@ -1,51 +1,46 @@
 <template>
   <q-page class="q-pa-md">
     <div class="row q-col-gutter-md">
-      
-
       <div class="col">
         <section class="bg-blue-grey-1 q-px-md q-py-xl rounded-borders">
           <div class="contact-wrapper">
             <div class="text-h6 text-primary text-weight-bold text-center q-mb-lg">
-              Contactez-nous
+              {{ t('contact.title') }}
             </div>
 
             <q-form ref="formStep3" class="q-gutter-md" @submit.prevent="payOrder">
               <q-input
                 v-model="form.nom"
                 outlined
-                label="Nom"
-                placeholder="Votre nom complet"
+                :label="t('contact.form.name.label')"
+                :placeholder="t('contact.form.name.placeholder')"
                 color="primary"
                 bg-color="white"
-                :rules="[
-                  val => !!val || 'Le nom est obligatoire'
-                ]"
+                :rules="nameRules"
+                reactive-rules
               />
 
               <q-input
                 v-model="form.email"
                 outlined
                 type="email"
-                label="Email"
-                placeholder="votre@email.fr" 
+                :label="t('contact.form.email.label')"
+                :placeholder="t('contact.form.email.placeholder')"
                 color="primary"
                 bg-color="white"
-                :rules="[
-                  val => !!val || 'email obligatoire',
-                ]"
+                :rules="emailRules"
+                reactive-rules
               />
 
               <q-input
                 v-model="form.sujet"
                 outlined
-                label="Sujet"
-                placeholder="Comment pouvons-nous vous aider ?"
+                :label="t('contact.form.subject.label')"
+                :placeholder="t('contact.form.subject.placeholder')"
                 color="primary"
                 bg-color="white"
-                :rules="[
-                  val => !!val || 'Le sujet est obligatoire'
-                ]"
+                :rules="subjectRules"
+                reactive-rules
               />
 
               <q-input
@@ -53,19 +48,18 @@
                 outlined
                 type="textarea"
                 autogrow
-                label="Message"
-                placeholder="Décrivez votre demande en détail..."
+                :label="t('contact.form.message.label')"
+                :placeholder="t('contact.form.message.placeholder')"
                 color="primary"
                 bg-color="white"
-                :rules="[
-                  val => !!val || 'Le message est obligatoire'
-                ]"
+                :rules="messageRules"
+                reactive-rules
               />
 
               <q-btn
                 unelevated
                 color="primary"
-                label="Envoyer le message"
+                :label="t('contact.form.submit')"
                 icon-right="send"
                 class="full-width"
                 size="md"
@@ -80,15 +74,21 @@
             <div class="col-12 col-md-6">
               <div class="text-h6 text-primary text-weight-bold">SofaLand</div>
               <div class="text-body2 text-grey-7 q-mt-sm">
-                © 2024 SofaLand. Qualité et confort pour votre maison.
+                {{ t('footer.brandText') }}
               </div>
             </div>
 
             <div class="col-12 col-md-6">
               <div class="column q-gutter-sm">
-                <div class="text-body2">Téléphone : 01 23 45 67 89</div>
-                <div class="text-body2">Email : support@sofaland.fr</div>
-                <div class="text-body2">Horaires : Lun-Ven 9h-18h</div>
+                <div class="text-body2">
+                  {{ t('footer.phone') }} : 01 23 45 67 89
+                </div>
+                <div class="text-body2">
+                  {{ t('footer.email') }} : support@sofaland.fr
+                </div>
+                <div class="text-body2">
+                  {{ t('footer.hours') }} : {{ t('footer.hoursValue') }}
+                </div>
               </div>
             </div>
           </div>
@@ -99,15 +99,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted} from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar, QForm } from 'quasar'
-import { useUserStore } from '../stores/userStore';
+import { useUserStore } from '../stores/userStore'
+import { useI18n } from 'vue-i18n'
 
-const userStore = useUserStore();
-
+const userStore = useUserStore()
 const $q = useQuasar()
 const router = useRouter()
+const { t } = useI18n()
 
 const formStep3 = ref<QForm | null>(null)
 
@@ -117,6 +118,22 @@ const form = reactive({
   sujet: '',
   message: ''
 })
+
+const nameRules = computed(() => [
+  (val: string) => !!val || t('contact.validation.nameRequired')
+])
+
+const emailRules = computed(() => [
+  (val: string) => !!val || t('contact.validation.emailRequired')
+])
+
+const subjectRules = computed(() => [
+  (val: string) => !!val || t('contact.validation.subjectRequired')
+])
+
+const messageRules = computed(() => [
+  (val: string) => !!val || t('contact.validation.messageRequired')
+])
 
 async function goToProduit() {
   await router.push('/')
@@ -136,7 +153,7 @@ async function payOrder() {
 function showNotif() {
   $q.notify({
     type: 'positive',
-    message: 'Votre message a été envoyé avec succès ! Nous vous répondrons dans les plus brefs délais.',
+    message: t('contact.notifications.success'),
     color: 'green',
     progress: true,
     timeout: 3000
@@ -145,8 +162,8 @@ function showNotif() {
 
 function ifconnected() {
   if (userStore.data.customer) {
-    form.nom = userStore.data.customer?.name;
-    form.email = userStore.data.customer?.email;
+    form.nom = userStore.data.customer.name
+    form.email = userStore.data.customer.email
   }
 }
 
