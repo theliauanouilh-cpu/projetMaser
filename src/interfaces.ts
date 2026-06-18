@@ -2,10 +2,10 @@ export interface Customer {
   id         : number;
   name       : string;
   email      : string;
-  adresse    : string;
+  address    : string;
   city      : string;
-  codePostal : string;
-  telephone  : string;
+  postalCode : string;
+  phone  : string;
   password   : string;
 }
 

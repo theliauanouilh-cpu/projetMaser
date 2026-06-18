@@ -45,7 +45,7 @@
 
           <div class="col-12">
             <q-input
-              v-model="form.adresse"
+              v-model="form.address"
               outlined
               :label="t('register.form.address.label')"
               :placeholder="t('register.form.address.placeholder')"
@@ -67,7 +67,7 @@
 
           <div class="col-12 col-md-6">
             <q-input
-              v-model="form.codePostal"
+              v-model="form.postalCode"
               outlined
               :label="t('register.form.zipCode.label')"
               :placeholder="t('register.form.zipCode.placeholder')"
@@ -78,7 +78,7 @@
 
           <div class="col-12">
             <q-input
-              v-model="form.telephone"
+              v-model="form.phone"
               outlined
               type="tel"
               :label="t('register.form.phone.label')"
@@ -129,10 +129,10 @@ const form = reactive({
   nom: '',
   email: '',
   password: '',
-  adresse: '',
+  address: '',
   city: '',
-  codePostal: '',
-  telephone: ''
+  postalCode: '',
+  phone: ''
 })
 
 /**
@@ -205,11 +205,11 @@ async function saveForm() {
   try {
     const newCustomerId = await bll.addCustomer(
       form.nom,
-      form.telephone,
+      form.phone,
       form.email,
-      form.adresse,
+      form.address,
       form.city,
-      form.codePostal,
+      form.postalCode,
       form.password
     )
 

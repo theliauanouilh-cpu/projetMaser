@@ -50,7 +50,7 @@
 
               <div class="col-12">
                 <q-input
-                  v-model="form.adresse"
+                  v-model="form.address"
                   outlined
                   :label="t('checkout.form.address.label')"
                   :placeholder="t('checkout.form.address.placeholder')"
@@ -72,7 +72,7 @@
 
               <div class="col-12 col-md-6">
                 <q-input
-                  v-model="form.codePostal"
+                  v-model="form.postalCode"
                   outlined
                   :label="t('checkout.form.zipCode.label')"
                   :placeholder="t('checkout.form.zipCode.placeholder')"
@@ -83,7 +83,7 @@
 
               <div class="col-12">
                 <q-input
-                  v-model="form.telephone"
+                  v-model="form.phone"
                   outlined
                   type="tel"
                   :label="t('checkout.form.phone.label')"
@@ -303,10 +303,10 @@ const formStep3 = ref<QForm | null>(null)
 const form = ref({
   nom: '',
   email: '',
-  adresse: '',
+  address: '',
   city: '',
-  codePostal: '',
-  telephone: '',
+  postalCode: '',
+  phone: '',
 })
 
 const delivery = ref('standard')
@@ -468,10 +468,10 @@ function ifconnected() {
   if (userStore.data.customer) {
     form.value.nom = userStore.data.customer.name
     form.value.email = userStore.data.customer.email
-    form.value.adresse = userStore.data.customer.adresse
+    form.value.address = userStore.data.customer.address
     form.value.city = userStore.data.customer.city
-    form.value.codePostal = userStore.data.customer.codePostal
-    form.value.telephone = userStore.data.customer.telephone
+    form.value.postalCode = userStore.data.customer.postalCode
+    form.value.phone = userStore.data.customer.phone
   }
 }
 

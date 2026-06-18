@@ -12,7 +12,7 @@ const db = new Dexie('SofaLandDatabase') as Dexie & {
 };
 
 db.version(1).stores({
-  customers: '++id, name, email, password, adresse, city, codePostal, telephone',
+  customers: '++id, name, email, password, address, city, postalCode, phone',
   products: 'id, nom, price, slide, images, category, description, size'
 });
 //#endregion
@@ -25,11 +25,11 @@ db.version(1).stores({
  */
 async function addDbCustomer(
   name: string,
-  telephone: string,
+  phone: string,
   email: string,
-  adresse: string,
+  address: string,
   city: string,
-  codePostal: string,
+  postalCode: string,
   password: string,
 ): Promise<number> {
   const customerExists = await db.customers.where({ email: email, password: password }).toArray()
@@ -41,11 +41,11 @@ async function addDbCustomer(
 
   return await db.customers.add({
     name,
-    telephone,
+    phone,
     email,
-    adresse,
+    address,
     city,
-    codePostal,
+    postalCode,
     password
   });
 }

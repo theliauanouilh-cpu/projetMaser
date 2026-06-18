@@ -18,13 +18,13 @@ export async function getproducts(): Promise<product[]> {
  */
 export async function addCustomer(
   name: string,
-  telephone: string,
+  phone: string,
   email: string,
-  adresse: string,
+  address: string,
   city: string,
-  codePostal: string,
+  postalCode: string,
   password: string
 ): Promise<number> {
-  return await addDbCustomer(name, telephone, email, adresse, city, codePostal, password);
+  return await addDbCustomer(name, phone, email, address, city, postalCode, password);
 }
 //#endregion

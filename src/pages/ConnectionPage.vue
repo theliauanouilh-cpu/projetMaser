@@ -140,10 +140,10 @@ async function authentication() {
       id: 0,
       name: customer.name,
       email: customer.email,
-      adresse: customer.adresse,
+      address: customer.address,
       city: customer.city,
-      codePostal: customer.codePostal,
-      telephone: customer.telephone,
+      postalCode: customer.postalCode,
+      phone: customer.phone,
       password: customer.password,
     }
 
