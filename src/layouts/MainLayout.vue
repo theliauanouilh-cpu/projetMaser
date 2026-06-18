@@ -63,7 +63,7 @@
           <!-- #endregion Drawer title -->
 
           <!-- #region Navigation -->
-          <q-item clickable v-ripple @click="goToProduit" class="justify-center">
+          <q-item clickable v-ripple @click="goToproduct" class="justify-center">
             <q-item-section class="text-center">
               {{ t('layout.drawer.products') }}
             </q-item-section>
@@ -243,7 +243,7 @@ function logout() {
 /**
  * Go to products page
  */
-function goToProduit() {
+function goToproduct() {
   void router.push('/');
   leftDrawerOpen.value = false;
 }

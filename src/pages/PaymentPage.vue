@@ -5,7 +5,7 @@
     <q-btn
       color="primary"
       :label="t('checkout.back')"
-      @click="goToProduit"
+      @click="goToproduct"
       class="q-mb-md"
     />
     <!-- #endregion Back button -->
@@ -400,7 +400,7 @@ const cvvRules = computed(() => [
 /**
  * Go to products page
  */
-async function goToProduit() {
+async function goToproduct() {
   await router.push('/')
 }
 
@@ -438,7 +438,7 @@ async function payOrder() {
 
   showNotif()
   clearPanier()
-  await goToProduit()
+  await goToproduct()
 }
 
 /**

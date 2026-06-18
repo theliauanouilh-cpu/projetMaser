@@ -116,7 +116,7 @@ function resetForm() {
 /**
  * Go to products page
  */
-async function goToProduit() {
+async function goToproduct() {
   await router.push('/')
 }
 
@@ -158,7 +158,7 @@ async function authentication() {
       timeout: 3000,
     })
 
-    await goToProduit()
+    await goToproduct()
   } else {
     /**
      * Show error notification

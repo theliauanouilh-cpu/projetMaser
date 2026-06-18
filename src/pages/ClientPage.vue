@@ -170,7 +170,7 @@ const messageRules = computed(() => [
 /**
  * Go to products page
  */
-async function goToProduit() {
+async function goToproduct() {
   await router.push('/')
 }
 
@@ -185,7 +185,7 @@ async function payOrder() {
   }
 
   showNotif()
-  await goToProduit()
+  await goToproduct()
 }
 
 /**
