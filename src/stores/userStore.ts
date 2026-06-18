@@ -1,12 +1,12 @@
 //#region Import
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import { LocalStorage } from 'quasar';
-import { type Customer, type Produit } from '../interfaces';
+import { type Customer, type product } from '../interfaces';
 //#endregion
 
 export interface State {
   panier: PanierItem[];
-  products: Produit[];
+  products: product[];
   customer: Customer | null;
   language: string;
 }
@@ -62,20 +62,20 @@ export const useUserStore = defineStore('user', {
     /**
      * Push a product and the data in the cart
      */
-    addToPanier(produit: Produit, quantity: number = 1) {
-      const existingItem = this.data.panier.find((item: PanierItem) => item.id === produit.id);
+    addToPanier(product: product, quantity: number = 1) {
+      const existingItem = this.data.panier.find((item: PanierItem) => item.id === product.id);
 
       if (existingItem) {
         existingItem.quantity += quantity;
       } else {
         this.data.panier.push({
-          id: produit.id,
-          nom: produit.nom,
-          prix: produit.prix ?? 0,
+          id: product.id,
+          nom: product.nom,
+          prix: product.prix ?? 0,
           quantity: quantity,
-          categorie: produit.categorie ?? '',
-          description: produit.description ?? '',
-          taille: produit.taille ?? '',
+          categorie: product.categorie ?? '',
+          description: product.description ?? '',
+          taille: product.taille ?? '',
         });
       }
       this.quantity = 1;

@@ -141,7 +141,7 @@ import { useI18n } from 'vue-i18n'
 //# region Init
 const router = useRouter()
 const userStore = useUserStore()
-const produits = ref(productList)
+const products = ref(productList)
 
 const { t, n } = useI18n()
 //# endregion
@@ -159,7 +159,7 @@ async function goToPayment() {
  * Get the first image of an item
  */
 function getImageForItem(id: number) {
-  const p = produits.value.find((prod) => prod.id === id)
+  const p = products.value.find((prod) => prod.id === id)
   if (!p || !p.images || p.images.length === 0) return ''
   return p.images[0]
 }

@@ -1,6 +1,6 @@
 //#region Import
-import { getDbUsers, addDbCustomer, getDbProduit } from "../dal/db";
-import { type Customer, type Produit } from '../interfaces';
+import { getDbUsers, addDbCustomer, getDbproduct } from "../dal/db";
+import { type Customer, type product } from '../interfaces';
 //#endregion
 
 //#region function
@@ -8,8 +8,8 @@ export async function getUsers(): Promise<Customer[]> {
   return await getDbUsers();
 }
 
-export async function getProduits(): Promise<Produit[]> {
-  return await getDbProduit();
+export async function getproducts(): Promise<product[]> {
+  return await getDbproduct();
 }
 
 /**

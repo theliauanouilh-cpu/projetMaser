@@ -9,7 +9,7 @@ export interface Customer {
   password   : string;
 }
 
-export interface Produit {
+export interface product {
   id           : number;
   nom          : string;
   prix         : number;

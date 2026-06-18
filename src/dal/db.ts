@@ -1,6 +1,6 @@
 //#region import
 import { Dexie, type EntityTable } from 'dexie';
-import { type Customer, type Produit} from '../interfaces'
+import { type Customer, type product} from '../interfaces'
 import productList from '../../data/products.json';
 //#endregion
 
@@ -8,12 +8,12 @@ import productList from '../../data/products.json';
 //#region Init
 const db = new Dexie('SofaLandDatabase') as Dexie & {
   customers: EntityTable<Customer, 'id'>;
-  produits: EntityTable<Produit, 'id'>;
+  products: EntityTable<product, 'id'>;
 };
 
 db.version(1).stores({
   customers: '++id, name, email, password, adresse, ville, codePostal, telephone',
-  produits: 'id, nom, prix, slide, images, categorie, description, taille'
+  products: 'id, nom, prix, slide, images, categorie, description, taille'
 });
 //#endregion
 
@@ -53,12 +53,12 @@ async function addDbCustomer(
 /**
  * Initialize products in the database
  */
-async function InitProduit(): Promise<void> {
-  const count = await db.produits.count();
+async function Initproduct(): Promise<void> {
+  const count = await db.products.count();
 
   if (count > 0) return;
 
-  await db.produits.bulkPut(productList);
+  await db.products.bulkPut(productList);
 }
 
 /**
@@ -71,9 +71,9 @@ async function getDbUsers(): Promise<Customer[]> {
 /**
  * Get all products
  */
-async function getDbProduit(): Promise<Produit[]> {
-  return await db.produits.toArray();
+async function getDbproduct(): Promise<product[]> {
+  return await db.products.toArray();
 }
 //#endregion
 
-export { db, addDbCustomer, getDbUsers, InitProduit, getDbProduit };
+export { db, addDbCustomer, getDbUsers, Initproduct, getDbproduct };

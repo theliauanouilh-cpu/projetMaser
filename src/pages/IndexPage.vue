@@ -6,14 +6,14 @@
         <!-- #region Product list -->
         <div class="row q-col-gutter-lg">
           <div
-            v-for="produit in produitsPagines"
-            :key="produit.id"
+            v-for="product in productsPagines"
+            :key="product.id"
             class="col-12 col-md-6"
           >
             <q-card class="product-card">
               <!-- #region Product images -->
               <q-carousel
-                v-model="produit.slide"
+                v-model="product.slide"
                 animated
                 arrows
                 navigation
@@ -22,7 +22,7 @@
                 class="bg-white-2"
                 control-color="grey"
               >
-                <template v-for="(image, index) in produit.images" :key="index">
+                <template v-for="(image, index) in product.images" :key="index">
                   <q-carousel-slide :name="index" style="overflow: hidden;">
                     <q-img
                       :src="image"
@@ -39,22 +39,22 @@
                 <q-separator color="grey-6" />
 
                 <div class="row text-h6">
-                  <div class="col">{{ produit.nom }}</div>
+                  <div class="col">{{ product.nom }}</div>
                   <div class="col text-right">
-                    {{ formatPrice(produit.prix) }}
+                    {{ formatPrice(product.prix) }}
                   </div>
                 </div>
 
-                <div v-if="produit.categorie" class="text-caption text-grey-7">
-                  {{ t('menu.product.category') }} : {{ produit.categorie }}
+                <div v-if="product.categorie" class="text-caption text-grey-7">
+                  {{ t('menu.product.category') }} : {{ product.categorie }}
                 </div>
 
-                <div v-if="produit.taille" class="text-caption text-grey-7">
-                  {{ t('menu.product.dimension') }} : {{ produit.taille }}
+                <div v-if="product.taille" class="text-caption text-grey-7">
+                  {{ t('menu.product.dimension') }} : {{ product.taille }}
                 </div>
 
                 <div class="text-caption text-grey-7">
-                  {{ t(`menu.products[${produit.id}].description`) }}
+                  {{ t(`menu.products[${product.id}].description`) }}
                 </div>
               </q-card-section>
               <!-- #endregion Product details -->
@@ -75,7 +75,7 @@
                 <q-btn
                   color="primary"
                   :label="t('menu.product.addToCart')"
-                  @click="handleAddToCart(produit)"
+                  @click="handleAddToCart(product)"
                 />
               </q-card-actions>
               <!-- #endregion Product actions -->
@@ -135,14 +135,14 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '../stores/userStore'
 import { useQuasar } from 'quasar'
-import { InitProduit } from '../dal/db'
-import { type Produit } from '../interfaces'
+import { Initproduct } from '../dal/db'
+import { type product } from '../interfaces'
 import * as bll from '../bll/bll'
 import { useI18n } from 'vue-i18n'
 //#endregion
 
 //#region Init
-const produits = ref<Produit[]>([])
+const products = ref<product[]>([])
 const current = ref(1)
 
 const router = useRouter()
@@ -151,7 +151,7 @@ const userStore = useUserStore()
 
 const $q = useQuasar()
 
-const produitsParPage = 4
+const productsParPage = 4
 
 const { t, n } = useI18n()
 
@@ -159,13 +159,13 @@ const { t, n } = useI18n()
 /**
  * Filter products by selected categories
  */
-const produitsFiltres = computed(() => {
+const productsFiltres = computed(() => {
   if (userStore.selectedCategories.length === 0) {
-    return produits.value
+    return products.value
   }
 
-  return produits.value.filter((produit) =>
-    userStore.selectedCategories.includes(produit.categorie ?? '')
+  return products.value.filter((product) =>
+    userStore.selectedCategories.includes(product.categorie ?? '')
   )
 })
 
@@ -173,16 +173,16 @@ const produitsFiltres = computed(() => {
  * Calculate total number of pages
  */
 const nombrePages = computed(() => {
-  return Math.ceil(produitsFiltres.value.length / produitsParPage) || 1
+  return Math.ceil(productsFiltres.value.length / productsParPage) || 1
 })
 
 /**
  * Get products for the current page
  */
-const produitsPagines = computed(() => {
-  const debut = (current.value - 1) * produitsParPage
-  const fin = debut + produitsParPage
-  return produitsFiltres.value.slice(debut, fin)
+const productsPagines = computed(() => {
+  const debut = (current.value - 1) * productsParPage
+  const fin = debut + productsParPage
+  return productsFiltres.value.slice(debut, fin)
 })
 //#endregion
 
@@ -229,21 +229,21 @@ function showNotif() {
 /**
  * Add a product to the cart
  */
-function handleAddToCart(produit: Produit) {
-  userStore.addToPanier(produit, userStore.quantity)
+function handleAddToCart(product: product) {
+  userStore.addToPanier(product, userStore.quantity)
   showNotif()
 }
 
 /**
  * Load all products
  */
-async function chargerProduits() {
-  await InitProduit()
-  produits.value = await bll.getProduits()
+async function chargerproducts() {
+  await Initproduct()
+  products.value = await bll.getproducts()
 }
 //#endregion
 
 onMounted(() => {
-  void chargerProduits()
+  void chargerproducts()
 })
 </script>
