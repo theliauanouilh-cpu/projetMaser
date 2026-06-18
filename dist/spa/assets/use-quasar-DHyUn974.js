@@ -1,0 +1,1 @@
+import{Tt as e}from"./index-BimiwWGn.js";function t(){return e(`_q_`)}export{t};

@@ -1,6 +1,9 @@
 <template>
+  <!-- #region Page -->
   <q-page class="q-pa-md">
+    <!-- #region Stepper -->
     <q-stepper v-model="step" vertical color="primary" animated>
+      <!-- #region Login step -->
       <q-step
         :name="1"
         :title="t('login.stepTitle')"
@@ -8,6 +11,7 @@
         :done="step > 1"
       >
         <q-card flat class="q-pa-sm">
+          <!-- #region Login form -->
           <q-card-section>
             <q-form ref="formStep1" class="row q-col-gutter-md" @submit.prevent="authentication">
               <div class="col-12">
@@ -36,6 +40,7 @@
                 />
               </div>
 
+              <!-- #region Login actions -->
               <div class="col-12 q-mt-sm row q-gutter-sm">
                 <q-btn
                   type="submit"
@@ -43,22 +48,31 @@
                   color="primary"
                 />
               </div>
+              <!-- #endregion Login actions -->
             </q-form>
           </q-card-section>
+          <!-- #endregion Login form -->
         </q-card>
       </q-step>
+      <!-- #endregion Login step -->
     </q-stepper>
+    <!-- #endregion Stepper -->
   </q-page>
+  <!-- #endregion Page -->
 </template>
 
 <script setup lang="ts">
+//#region Import
 import { ref, reactive, computed } from 'vue'
 import { useUserStore } from '../stores/userStore'
 import { useRouter } from 'vue-router'
 import { useQuasar, QForm } from 'quasar'
 import * as bll from '../bll/bll'
 import { useI18n } from 'vue-i18n'
+//#endregion
 
+
+//#region Init
 const $q = useQuasar()
 const router = useRouter()
 const userStore = useUserStore()
@@ -72,25 +86,43 @@ const form = reactive({
   password: '',
 })
 
+/**
+ * Validate email field
+ */
 const emailRules = computed(() => [
   (val: string) => !!val || t('login.validation.emailRequired')
 ])
 
+/**
+ * Validate password field
+ */
 const passwordRules = computed(() => [
   (val: string) => !!val || t('login.validation.passwordRequired'),
   (val: string) => val.length >= 6 || t('login.validation.passwordMin')
 ])
+//#endregion
 
+
+//#region Function
+/**
+ * Reset login form
+ */
 function resetForm() {
   form.email = ''
   form.password = ''
   formStep1.value?.resetValidation()
 }
 
+/**
+ * Go to products page
+ */
 async function goToProduit() {
   await router.push('/')
 }
 
+/**
+ * Authenticate user
+ */
 async function authentication() {
   const isValid = await formStep1.value?.validate()
 
@@ -115,6 +147,9 @@ async function authentication() {
       password: customer.password,
     }
 
+    /**
+     * Show success notification
+     */
     $q.notify({
       type: 'positive',
       message: t('login.notifications.success'),
@@ -125,6 +160,9 @@ async function authentication() {
 
     await goToProduit()
   } else {
+    /**
+     * Show error notification
+     */
     $q.notify({
       type: 'negative',
       position: 'top',
@@ -137,4 +175,5 @@ async function authentication() {
     resetForm()
   }
 }
+//#endregion
 </script>

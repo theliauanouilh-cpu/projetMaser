@@ -1,23 +1,29 @@
 <template>
+  <!-- #region Page -->
   <q-page class="page-menu" style="min-height: 100vh">
     <div class="row no-wrap" style="min-height: 100vh">
       <div class="col q-pa-md">
         <div class="col-12 col-md-4">
+          <!-- #region Basket -->
           <q-card>
+            <!-- #region Basket header -->
             <q-card-section>
               <div class="text-h6">
                 {{ t('cart.title') }} ({{ userStore.panierCount }})
               </div>
             </q-card-section>
+            <!-- #endregion Basket header -->
 
             <q-separator />
 
+            <!-- #region Basket list -->
             <q-list>
               <q-item
                 v-for="item in userStore.data.panier"
                 :key="item.id"
                 clickable
               >
+                <!-- #region Item image -->
                 <q-item-section avatar>
                   <q-img
                     :src="getImageForItem(item.id)"
@@ -25,14 +31,18 @@
                     fit="contain"
                   />
                 </q-item-section>
+                <!-- #endregion Item image -->
 
+                <!-- #region Item details -->
                 <q-item-section>
                   <q-item-label>{{ item.nom }}</q-item-label>
                   <q-item-label caption>
                     {{ formatPrice(item.prix) }} x {{ item.quantity }}
                   </q-item-label>
                 </q-item-section>
+                <!-- #endregion Item details -->
 
+                <!-- #region Item quantity -->
                 <q-item-section side class="row items-center">
                   <q-input
                     v-model="item.quantity"
@@ -65,7 +75,9 @@
                     </template>
                   </q-input>
                 </q-item-section>
+                <!-- #endregion Item quantity -->
 
+                <!-- #region Item delete -->
                 <q-item-section side class="row items-center">
                   <q-btn
                     dense
@@ -77,17 +89,22 @@
                     class="q-ml-sm"
                   />
                 </q-item-section>
+                <!-- #endregion Item delete -->
               </q-item>
 
+              <!-- #region Empty basket -->
               <q-item v-if="userStore.data.panier.length === 0">
                 <q-item-section>
                   {{ t('cart.empty') }}
                 </q-item-section>
               </q-item>
+              <!-- #endregion Empty basket -->
             </q-list>
+            <!-- #endregion Basket list -->
 
             <q-separator />
 
+            <!-- #region Basket footer -->
             <q-card-section>
               <div class="text-subtitle1">
                 {{ t('cart.total') }} : {{ formatPrice(userStore.panierTotal) }}
@@ -102,36 +119,54 @@
                 />
               </div>
             </q-card-section>
+            <!-- #endregion Basket footer -->
           </q-card>
+          <!-- #endregion Basket -->
         </div>
       </div>
     </div>
   </q-page>
+  <!-- #endregion Page -->
 </template>
 
 <script setup lang="ts">
+//#region Imports
 import { ref } from 'vue'
 import { useUserStore } from '../stores/userStore'
 import { useRouter } from 'vue-router'
 import productList from '../../data/products.json'
 import { useI18n } from 'vue-i18n'
+//#endregion
 
+//# region Init
 const router = useRouter()
 const userStore = useUserStore()
 const produits = ref(productList)
 
 const { t, n } = useI18n()
+//# endregion
 
+
+//#region Function
+/**
+ * Go to payment page
+ */
 async function goToPayment() {
   await router.push('/pay')
 }
 
+/**
+ * Get the first image of an item
+ */
 function getImageForItem(id: number) {
   const p = produits.value.find((prod) => prod.id === id)
   if (!p || !p.images || p.images.length === 0) return ''
   return p.images[0]
 }
 
+/**
+ * Format price in euro
+ */
 function formatPrice(value: number): string {
   try {
     return n(value, {
@@ -142,4 +177,5 @@ function formatPrice(value: number): string {
     return `${value.toFixed(2)} €`
   }
 }
+//#endregion
 </script>

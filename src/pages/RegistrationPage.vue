@@ -1,6 +1,9 @@
 <template>
+  <!-- #region Register page -->
   <q-page class="q-pa-md">
+    <!-- #region Register card -->
     <q-card flat class="q-pa-sm">
+      <!-- #region Register form -->
       <q-card-section>
         <q-form ref="formInscription" class="row q-col-gutter-md" @submit.prevent="saveForm">
           <div class="col-12">
@@ -85,6 +88,7 @@
             />
           </div>
 
+          <!-- #region Register actions -->
           <div class="col-12 q-mt-sm row q-gutter-sm">
             <q-btn
               unelevated
@@ -96,18 +100,26 @@
               type="submit"
             />
           </div>
+          <!-- #endregion Register actions -->
         </q-form>
       </q-card-section>
+      <!-- #endregion Register form -->
     </q-card>
+    <!-- #endregion Register card -->
   </q-page>
+  <!-- #endregion Register page -->
 </template>
 
 <script setup lang="ts">
+//#region Import
 import { reactive, ref, onMounted, computed } from 'vue'
 import { LocalStorage, QForm, useQuasar } from 'quasar'
 import * as bll from '../bll/bll'
 import { useI18n } from 'vue-i18n'
+//#endregion
 
+
+//#region Init
 const $q = useQuasar()
 const { t } = useI18n()
 
@@ -123,44 +135,66 @@ const form = reactive({
   telephone: ''
 })
 
+/**
+ * Validate name field
+ */
 const nameRules = computed(() => [
   (val: string) => !!val || t('register.validation.nameRequired')
 ])
 
+/**
+ * Validate email field
+ */
 const emailRules = computed(() => [
   (val: string) => !!val || t('register.validation.emailRequired')
 ])
 
+/**
+ * Validate password field
+ */
 const passwordRules = computed(() => [
   (val: string) => !!val || t('register.validation.passwordRequired'),
   (val: string) => val.length >= 6 || t('register.validation.passwordMin')
 ])
 
+/**
+ * Validate address field
+ */
 const addressRules = computed(() => [
   (val: string) => !!val || t('register.validation.addressRequired')
 ])
 
+/**
+ * Validate city field
+ */
 const cityRules = computed(() => [
   (val: string) => !!val || t('register.validation.cityRequired')
 ])
 
+/**
+ * Validate zip code field
+ */
 const zipCodeRules = computed(() => [
   (val: string) => !!val || t('register.validation.zipRequired'),
   (val: string) => /^\d{5}$/.test(val) || t('register.validation.zipInvalid')
 ])
 
+/**
+ * Validate phone field
+ */
 const phoneRules = computed(() => [
   (val: string) => !!val || t('register.validation.phoneRequired'),
   (val: string) => val.length >= 10 || t('register.validation.phoneTooShort')
 ])
+//#endregion
 
-onMounted(() => {
-  const savedForm = LocalStorage.getItem('form-inscription')
-  if (savedForm) {
-    Object.assign(form, savedForm)
-  }
-})
 
+
+
+//#region Function
+/**
+ * Validate and save register form
+ */
 async function saveForm() {
   const isValid = await formInscription.value?.validate()
 
@@ -200,4 +234,15 @@ async function saveForm() {
     })
   }
 }
+//#endregion
+
+/**
+ * Restore saved form on mount
+ */
+onMounted(() => {
+  const savedForm = LocalStorage.getItem('form-inscription')
+  if (savedForm) {
+    Object.assign(form, savedForm)
+  }
+})
 </script>

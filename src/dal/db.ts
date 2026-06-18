@@ -1,10 +1,9 @@
+//#region import
 import { Dexie, type EntityTable } from 'dexie';
 import { type Customer, type Produit} from '../interfaces'
 import productList from '../../data/products.json';
-
-//#region Interfaces
-
 //#endregion
+
 
 //#region Init
 const db = new Dexie('SofaLandDatabase') as Dexie & {
@@ -18,21 +17,22 @@ db.version(1).stores({
 });
 //#endregion
 
+
 //#region Functions
 /**
- * Add a user to the database : warning, does not check if user already exists
- * @returns Newly created userId
+ * Add a customer to the database
+ * @returns Newly created customerId
  */
 async function addDbCustomer(
-  name       : string,
-  telephone  : string,
-  email      : string,
-  adresse    : string,
-  ville      : string,
-  codePostal : string,
-  password   : string,
+  name: string,
+  telephone: string,
+  email: string,
+  adresse: string,
+  ville: string,
+  codePostal: string,
+  password: string,
 ): Promise<number> {
-  const customerExists = await db.customers.where({email: email, password: password }).toArray()
+  const customerExists = await db.customers.where({ email: email, password: password }).toArray()
 
   console.log(customerExists)
   if (customerExists.length > 0) {
@@ -50,6 +50,9 @@ async function addDbCustomer(
   });
 }
 
+/**
+ * Initialize products in the database
+ */
 async function InitProduit(): Promise<void> {
   const count = await db.produits.count();
 
@@ -58,13 +61,17 @@ async function InitProduit(): Promise<void> {
   await db.produits.bulkPut(productList);
 }
 
-
-
+/**
+ * Get all customers
+ */
 async function getDbUsers(): Promise<Customer[]> {
   return await db.customers.toArray();
 }
 
-async function getDbProduit(): Promise<Produit[]>{
+/**
+ * Get all products
+ */
+async function getDbProduit(): Promise<Produit[]> {
   return await db.produits.toArray();
 }
 //#endregion

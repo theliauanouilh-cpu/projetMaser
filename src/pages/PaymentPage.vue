@@ -1,13 +1,18 @@
 <template>
+  <!-- #region Checkout -->
   <div class="q-pa-md">
+    <!-- #region Back button -->
     <q-btn
       color="primary"
       :label="t('checkout.back')"
       @click="goToProduit"
       class="q-mb-md"
     />
+    <!-- #endregion Back button -->
 
+    <!-- #region Stepper -->
     <q-stepper v-model="step" ref="stepper" color="primary" animated flat bordered>
+      <!-- #region Step 1 -->
       <q-step
         :name="1"
         :title="t('checkout.steps.deliveryAddress')"
@@ -15,6 +20,7 @@
         :done="step > 1"
       >
         <q-card flat class="q-pa-sm">
+          <!-- #region Delivery form -->
           <q-card-section>
             <q-form ref="formStep1" class="row q-col-gutter-md">
               <div class="col-12">
@@ -88,8 +94,10 @@
               </div>
             </q-form>
           </q-card-section>
+          <!-- #endregion Delivery form -->
         </q-card>
 
+        <!-- #region Step 1 actions -->
         <q-stepper-navigation>
           <q-btn
             color="primary"
@@ -97,8 +105,11 @@
             @click="nextStep1"
           />
         </q-stepper-navigation>
+        <!-- #endregion Step 1 actions -->
       </q-step>
+      <!-- #endregion Step 1 -->
 
+      <!-- #region Step 2 -->
       <q-step
         :name="2"
         :title="t('checkout.steps.deliveryMode')"
@@ -106,6 +117,7 @@
         :done="step > 2"
       >
         <q-card flat class="q-pa-sm">
+          <!-- #region Delivery mode -->
           <q-card-section>
             <div class="column q-gutter-sm">
               <div
@@ -159,8 +171,10 @@
               </div>
             </div>
           </q-card-section>
+          <!-- #endregion Delivery mode -->
         </q-card>
 
+        <!-- #region Step 2 actions -->
         <q-stepper-navigation>
           <q-btn
             color="primary"
@@ -175,14 +189,18 @@
             class="q-ml-sm"
           />
         </q-stepper-navigation>
+        <!-- #endregion Step 2 actions -->
       </q-step>
+      <!-- #endregion Step 2 -->
 
+      <!-- #region Step 3 -->
       <q-step
         :name="3"
         :title="t('checkout.steps.payment')"
         icon="payments"
       >
         <q-card flat class="q-pa-sm">
+          <!-- #region Payment form -->
           <q-card-section>
             <q-form ref="formStep3" class="row q-col-gutter-md">
               <div class="col-12">
@@ -229,12 +247,16 @@
               </div>
             </q-form>
 
+            <!-- #region Total -->
             <div class="q-mt-lg text-h6">
               {{ t('checkout.total') }} : {{ formatPrice(total) }}
             </div>
+            <!-- #endregion Total -->
           </q-card-section>
+          <!-- #endregion Payment form -->
         </q-card>
 
+        <!-- #region Step 3 actions -->
         <q-stepper-navigation>
           <q-btn
             color="primary"
@@ -249,18 +271,26 @@
             class="q-ml-sm"
           />
         </q-stepper-navigation>
+        <!-- #endregion Step 3 actions -->
       </q-step>
+      <!-- #endregion Step 3 -->
     </q-stepper>
+    <!-- #endregion Stepper -->
   </div>
+  <!-- #endregion Checkout -->
 </template>
 
 <script setup lang="ts">
+//#region Import
 import { ref, computed, onMounted } from 'vue'
 import { useUserStore } from '../stores/userStore'
 import { useRouter } from 'vue-router'
 import { useQuasar, QForm } from 'quasar'
 import { useI18n } from 'vue-i18n'
+//#endregion
 
+
+//#region Init
 const $q = useQuasar()
 const userStore = useUserStore()
 const router = useRouter()
@@ -287,57 +317,96 @@ const payment = ref({
   cvv: '',
 })
 
+/**
+ * Calculate order total
+ */
 const total = computed(() => {
   const base = userStore.panierTotal || 0
   const express = delivery.value === 'express' ? 15 : 0
   return base + express
 })
 
+/**
+ * Validate name field
+ */
 const nameRules = computed(() => [
   (val: string) => !!val || t('checkout.validation.nameRequired')
 ])
 
+/**
+ * Validate email field
+ */
 const emailRules = computed(() => [
   (val: string) => !!val || t('checkout.validation.emailRequired')
 ])
 
+/**
+ * Validate address field
+ */
 const addressRules = computed(() => [
   (val: string) => !!val || t('checkout.validation.addressRequired')
 ])
 
+/**
+ * Validate city field
+ */
 const cityRules = computed(() => [
   (val: string) => !!val || t('checkout.validation.cityRequired')
 ])
 
+/**
+ * Validate zip code field
+ */
 const zipCodeRules = computed(() => [
   (val: string) => !!val || t('checkout.validation.zipRequired'),
   (val: string) => /^\d{5}$/.test(val) || t('checkout.validation.zipInvalid')
 ])
 
+/**
+ * Validate phone field
+ */
 const phoneRules = computed(() => [
   (val: string) => !!val || t('checkout.validation.phoneRequired'),
   (val: string) => val.length >= 9 || t('checkout.validation.phoneTooShort')
 ])
 
+/**
+ * Validate card number field
+ */
 const cardNumberRules = computed(() => [
   (val: string) => !!val || t('checkout.validation.cardRequired'),
   (val: string) => val.replace(/\s/g, '').length === 16 || t('checkout.validation.cardInvalid')
 ])
 
+/**
+ * Validate expiration field
+ */
 const expirationRules = computed(() => [
   (val: string) => !!val || t('checkout.validation.expirationRequired'),
   (val: string) => val.length === 5 || t('checkout.validation.expirationInvalid')
 ])
 
+/**
+ * Validate CVV field
+ */
 const cvvRules = computed(() => [
   (val: string) => !!val || t('checkout.validation.cvvRequired'),
   (val: string) => val.length === 3 || t('checkout.validation.cvvInvalid')
 ])
+//#endregion
 
+
+//#region Function
+/**
+ * Go to products page
+ */
 async function goToProduit() {
   await router.push('/')
 }
 
+/**
+ * Validate first checkout step
+ */
 async function nextStep1() {
   const isValid = await formStep1.value?.validate()
   if (isValid) {
@@ -345,6 +414,9 @@ async function nextStep1() {
   }
 }
 
+/**
+ * Validate delivery mode step
+ */
 function nextStep2() {
   if (!delivery.value) {
     $q.notify({
@@ -357,6 +429,9 @@ function nextStep2() {
   step.value = 3
 }
 
+/**
+ * Validate payment and place order
+ */
 async function payOrder() {
   const isValid = await formStep3.value?.validate()
   if (!isValid) return
@@ -366,6 +441,9 @@ async function payOrder() {
   await goToProduit()
 }
 
+/**
+ * Show success notification
+ */
 function showNotif() {
   $q.notify({
     type: 'positive',
@@ -376,10 +454,16 @@ function showNotif() {
   })
 }
 
+/**
+ * Clear cart
+ */
 function clearPanier() {
   userStore.clearPanier()
 }
 
+/**
+ * Fill form if user is connected
+ */
 function ifconnected() {
   if (userStore.data.customer) {
     form.value.nom = userStore.data.customer.name
@@ -391,6 +475,9 @@ function ifconnected() {
   }
 }
 
+/**
+ * Format price in euro
+ */
 function formatPrice(value: number): string {
   try {
     return n(value, {
@@ -401,7 +488,11 @@ function formatPrice(value: number): string {
     return `${value.toFixed(2)} €`
   }
 }
+//#endregion
 
+/**
+ * Fill form on component mount
+ */
 onMounted(() => {
   ifconnected()
 })
