@@ -47,7 +47,7 @@ export default defineConfig((/* ctx */) => {
       // Use a relative publicPath so asset URLs work when deploying the built
       // `dist` folder to GitHub Pages or a subpath. Also set distDir explicitly
       // to match the CI workflow which uploads `dist/spa`.
-      publicPath: './',
+      //publicPath: './',
       // vueRouterBase,
       vueDevtools: true,
       // vueOptionsAPI: false,
