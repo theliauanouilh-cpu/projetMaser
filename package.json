@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "quasar dev",
     "dev:tools": "quasar dev --devtools",
+    "ssr": "quasar dev --mode ssr",
     "build": "quasar build",
     "postinstall": "quasar prepare"
   },
@@ -39,7 +40,7 @@
     "vue-tsc": "^3.2.6"
   },
   "engines": {
-    "node": "^28 || ^26 || ^24 || ^22.12",
+    "node": "^28 || ^26 || ^24",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1",
     "pnpm": ">= 10.0.0"

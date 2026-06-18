@@ -142,18 +142,13 @@ import { useI18n } from 'vue-i18n'
 //#endregion
 
 //#region Init
-const products = ref<product[]>([])
-const current = ref(1)
-
-const router = useRouter()
-
-const userStore = useUserStore()
-
-const $q = useQuasar()
-
+const products       = ref<product[]>([])
+const current        = ref(1)
+const router         = useRouter()
+const userStore      = useUserStore()
+const $q             = useQuasar()
 const productsByPage = 4
-
-const { t, n } = useI18n()
+const { t, n }       = useI18n()
 
 
 /**
@@ -181,7 +176,8 @@ const numberPages = computed(() => {
  */
 const productsPages = computed(() => {
   const debut = (current.value - 1) * productsByPage
-  const fin = debut + productsByPage
+  const fin   = debut + productsByPage
+
   return productsFilters.value.slice(debut, fin)
 })
 //#endregion
@@ -194,8 +190,8 @@ const productsPages = computed(() => {
 function formatPrice(price: number): string {
   try {
     return n(price, {
-      style: 'currency',
-      currency: 'EUR'
+      style    : 'currency',
+      currency : 'EUR'
     })
   } catch {
     return `${price.toFixed(2)} €`
@@ -207,20 +203,20 @@ function formatPrice(price: number): string {
  */
 function showNotif() {
   $q.notify({
-    message: t('notifications.cartCount', { count: userStore.cartCount }),
-    position: 'top',
-    color: 'primary',
+    message  : t('notifications.cartCount', { count: userStore.cartCount }),
+    position : 'top',
+    color    : 'primary',
     actions: [
       {
-        label: t('notifications.goToCart'),
-        color: 'white',
+        label : t('notifications.goToCart'),
+        color : 'white',
         handler: () => {
           void router.push('/panier')
         }
       },
       {
-        label: t('notifications.continueShopping'),
-        color: 'white'
+        label : t('notifications.continueShopping'),
+        color : 'white'
       }
     ]
   })
