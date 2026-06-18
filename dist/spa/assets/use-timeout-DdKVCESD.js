@@ -1,1 +1,0 @@
-import{Ct as e,f as t,jt as n,kt as r}from"./index-BimiwWGn.js";function i(){let i=null,a=e();function o(){i!==null&&(clearTimeout(i),i=null)}return n(o),r(o),{removeTimeout:o,registerTimeout(e,n){o(),t(a)===!1&&(i=setTimeout(()=>{i=null,e()},n))}}}export{i as t};

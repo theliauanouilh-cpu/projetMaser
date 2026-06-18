@@ -1,1 +1,0 @@
-import{l as e,pt as t,xt as n,yt as r}from"./index-Df17Q3rF.js";function i(){let i=null,a=t();function o(){i!==null&&(clearTimeout(i),i=null)}return n(o),r(o),{removeTimeout:o,registerTimeout(t,n){o(),e(a)===!1&&(i=setTimeout(()=>{i=null,t()},n))}}}export{i as t};
