@@ -61,7 +61,7 @@
 
               <div class="col-12 col-md-6">
                 <q-input
-                  v-model="form.ville"
+                  v-model="form.city"
                   outlined
                   :label="t('checkout.form.city.label')"
                   :placeholder="t('checkout.form.city.placeholder')"
@@ -304,7 +304,7 @@ const form = ref({
   nom: '',
   email: '',
   adresse: '',
-  ville: '',
+  city: '',
   codePostal: '',
   telephone: '',
 })
@@ -469,7 +469,7 @@ function ifconnected() {
     form.value.nom = userStore.data.customer.name
     form.value.email = userStore.data.customer.email
     form.value.adresse = userStore.data.customer.adresse
-    form.value.ville = userStore.data.customer.ville
+    form.value.city = userStore.data.customer.city
     form.value.codePostal = userStore.data.customer.codePostal
     form.value.telephone = userStore.data.customer.telephone
   }

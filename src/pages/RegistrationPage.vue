@@ -56,7 +56,7 @@
 
           <div class="col-12 col-md-6">
             <q-input
-              v-model="form.ville"
+              v-model="form.city"
               outlined
               :label="t('register.form.city.label')"
               :placeholder="t('register.form.city.placeholder')"
@@ -130,7 +130,7 @@ const form = reactive({
   email: '',
   password: '',
   adresse: '',
-  ville: '',
+  city: '',
   codePostal: '',
   telephone: ''
 })
@@ -208,7 +208,7 @@ async function saveForm() {
       form.telephone,
       form.email,
       form.adresse,
-      form.ville,
+      form.city,
       form.codePostal,
       form.password
     )

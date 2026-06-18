@@ -6,7 +6,7 @@
         <!-- #region Product list -->
         <div class="row q-col-gutter-lg">
           <div
-            v-for="product in productsPagines"
+            v-for="product in productsPages"
             :key="product.id"
             class="col-12 col-md-6"
           >
@@ -88,7 +88,7 @@
         <div class="q-pa-lg flex flex-center">
           <q-pagination
             v-model="current"
-            :max="nombrePages"
+            :max="numberPages"
             color="primary"
             direction-links
             boundary-links
@@ -151,7 +151,7 @@ const userStore = useUserStore()
 
 const $q = useQuasar()
 
-const productsParPage = 4
+const productsByPage = 4
 
 const { t, n } = useI18n()
 
@@ -159,7 +159,7 @@ const { t, n } = useI18n()
 /**
  * Filter products by selected categorys
  */
-const productsFiltres = computed(() => {
+const productsFilters = computed(() => {
   if (userStore.selectedcategorys.length === 0) {
     return products.value
   }
@@ -172,17 +172,17 @@ const productsFiltres = computed(() => {
 /**
  * Calculate total number of pages
  */
-const nombrePages = computed(() => {
-  return Math.ceil(productsFiltres.value.length / productsParPage) || 1
+const numberPages = computed(() => {
+  return Math.ceil(productsFilters.value.length / productsByPage) || 1
 })
 
 /**
  * Get products for the current page
  */
-const productsPagines = computed(() => {
-  const debut = (current.value - 1) * productsParPage
-  const fin = debut + productsParPage
-  return productsFiltres.value.slice(debut, fin)
+const productsPages = computed(() => {
+  const debut = (current.value - 1) * productsByPage
+  const fin = debut + productsByPage
+  return productsFilters.value.slice(debut, fin)
 })
 //#endregion
 
@@ -237,13 +237,13 @@ function handleAddToCart(product: product) {
 /**
  * Load all products
  */
-async function chargerproducts() {
+async function loadproducts() {
   await Initproduct()
   products.value = await bll.getproducts()
 }
 //#endregion
 
 onMounted(() => {
-  void chargerproducts()
+  void loadproducts()
 })
 </script>

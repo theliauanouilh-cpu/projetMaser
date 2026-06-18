@@ -21,10 +21,10 @@ export async function addCustomer(
   telephone: string,
   email: string,
   adresse: string,
-  ville: string,
+  city: string,
   codePostal: string,
   password: string
 ): Promise<number> {
-  return await addDbCustomer(name, telephone, email, adresse, ville, codePostal, password);
+  return await addDbCustomer(name, telephone, email, adresse, city, codePostal, password);
 }
 //#endregion

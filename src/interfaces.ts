@@ -3,7 +3,7 @@ export interface Customer {
   name       : string;
   email      : string;
   adresse    : string;
-  ville      : string;
+  city      : string;
   codePostal : string;
   telephone  : string;
   password   : string;

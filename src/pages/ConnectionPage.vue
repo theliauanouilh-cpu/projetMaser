@@ -141,7 +141,7 @@ async function authentication() {
       name: customer.name,
       email: customer.email,
       adresse: customer.adresse,
-      ville: customer.ville,
+      city: customer.city,
       codePostal: customer.codePostal,
       telephone: customer.telephone,
       password: customer.password,
