@@ -64,26 +64,26 @@
 <script setup lang="ts">
 //#region Import
 import { ref, reactive, computed } from 'vue'
-import { useUserStore } from '../stores/userStore'
-import { useRouter } from 'vue-router'
-import { useQuasar, QForm } from 'quasar'
-import * as bll from '../bll/bll'
-import { useI18n } from 'vue-i18n'
+import { useUserStore }            from '../stores/userStore'
+import { useRouter }               from 'vue-router'
+import { useQuasar, QForm }        from 'quasar'
+import * as bll                    from '../bll/bll'
+import { useI18n }                 from 'vue-i18n'
 //#endregion
 
 
 //#region Init
-const $q = useQuasar()
-const router = useRouter()
+const $q        = useQuasar()
+const router    = useRouter()
 const userStore = useUserStore()
-const { t } = useI18n()
+const { t }     = useI18n()
 
-const step = ref(1)
+const step      = ref(1)
 const formStep1 = ref<QForm | null>(null)
 
 const form = reactive({
-  email: '',
-  password: '',
+  email    : '',
+  password : '',
 })
 
 /**
@@ -137,25 +137,25 @@ async function authentication() {
 
   if (customer) {
     userStore.data.customer = {
-      id: 0,
-      name: customer.name,
-      email: customer.email,
-      address: customer.address,
-      city: customer.city,
-      postalCode: customer.postalCode,
-      phone: customer.phone,
-      password: customer.password,
+      id         : 0,
+      name       : customer.name,
+      email      : customer.email,
+      address    : customer.address,
+      city       : customer.city,
+      postalCode : customer.postalCode,
+      phone      : customer.phone,
+      password   : customer.password,
     }
 
     /**
      * Show success notification
      */
     $q.notify({
-      type: 'positive',
-      message: t('login.notifications.success'),
-      color: 'green',
-      progress: true,
-      timeout: 3000,
+      type     : 'positive',
+      message  : t('login.notifications.success'),
+      color    : 'green',
+      progress : true,
+      timeout  : 3000,
     })
 
     await goToproduct()
@@ -164,12 +164,12 @@ async function authentication() {
      * Show error notification
      */
     $q.notify({
-      type: 'negative',
-      position: 'top',
-      message: t('login.notifications.error'),
-      color: 'red',
-      progress: true,
-      timeout: 3000,
+      type     : 'negative',
+      position : 'top',
+      message  : t('login.notifications.error'),
+      color    : 'red',
+      progress : true,
+      timeout  : 3000,
     })
 
     resetForm()

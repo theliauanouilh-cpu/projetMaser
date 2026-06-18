@@ -123,17 +123,17 @@ import { useI18n } from 'vue-i18n'
 
 //#region Init
 const userStore = useUserStore()
-const $q = useQuasar()
-const router = useRouter()
-const { t } = useI18n()
+const $q        = useQuasar()
+const router    = useRouter()
+const { t }     = useI18n()
 
 const formStep3 = ref<QForm | null>(null)
 
 const form = reactive({
-  nom: '',
-  email: '',
-  sujet: '',
-  message: ''
+  nom     : '',
+  email   : '',
+  sujet   : '',
+  message : ''
 })
 
 /**
@@ -193,11 +193,11 @@ async function payOrder() {
  */
 function showNotif() {
   $q.notify({
-    type: 'positive',
-    message: t('contact.notifications.success'),
-    color: 'green',
-    progress: true,
-    timeout: 3000
+    type     : 'positive',
+    message  : t('contact.notifications.success'),
+    color    : 'green',
+    progress : true,
+    timeout  : 3000
   })
 }
 
@@ -206,7 +206,7 @@ function showNotif() {
  */
 function ifconnected() {
   if (userStore.data.customer) {
-    form.nom = userStore.data.customer.name
+    form.nom   = userStore.data.customer.name
     form.email = userStore.data.customer.email
   }
 }
