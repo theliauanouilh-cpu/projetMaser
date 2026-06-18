@@ -321,7 +321,7 @@ const payment = ref({
  * Calculate order total
  */
 const total = computed(() => {
-  const base = userStore.panierTotal || 0
+  const base = userStore.cartTotal || 0
   const express = delivery.value === 'express' ? 15 : 0
   return base + express
 })
@@ -437,7 +437,7 @@ async function payOrder() {
   if (!isValid) return
 
   showNotif()
-  clearPanier()
+  clearCart()
   await goToproduct()
 }
 
@@ -457,8 +457,8 @@ function showNotif() {
 /**
  * Clear cart
  */
-function clearPanier() {
-  userStore.clearPanier()
+function clearCart() {
+  userStore.clearCart()
 }
 
 /**

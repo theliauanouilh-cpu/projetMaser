@@ -13,7 +13,7 @@ const db = new Dexie('SofaLandDatabase') as Dexie & {
 
 db.version(1).stores({
   customers: '++id, name, email, password, adresse, ville, codePostal, telephone',
-  products: 'id, nom, prix, slide, images, categorie, description, taille'
+  products: 'id, nom, price, slide, images, category, description, size'
 });
 //#endregion
 

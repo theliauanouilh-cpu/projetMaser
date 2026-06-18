@@ -9,7 +9,7 @@
             <!-- #region Basket header -->
             <q-card-section>
               <div class="text-h6">
-                {{ t('cart.title') }} ({{ userStore.panierCount }})
+                {{ t('cart.title') }} ({{ userStore.cartCount }})
               </div>
             </q-card-section>
             <!-- #endregion Basket header -->
@@ -19,7 +19,7 @@
             <!-- #region Basket list -->
             <q-list>
               <q-item
-                v-for="item in userStore.data.panier"
+                v-for="item in userStore.data.cart"
                 :key="item.id"
                 clickable
               >
@@ -37,7 +37,7 @@
                 <q-item-section>
                   <q-item-label>{{ item.nom }}</q-item-label>
                   <q-item-label caption>
-                    {{ formatPrice(item.prix) }} x {{ item.quantity }}
+                    {{ formatPrice(item.price) }} x {{ item.quantity }}
                   </q-item-label>
                 </q-item-section>
                 <!-- #endregion Item details -->
@@ -85,7 +85,7 @@
                     color="negative"
                     icon="delete"
                     :aria-label="t('cart.deleteItem')"
-                    @click="userStore.deleteFromPanier(item.id)"
+                    @click="userStore.deleteFromCart(item.id)"
                     class="q-ml-sm"
                   />
                 </q-item-section>
@@ -93,7 +93,7 @@
               </q-item>
 
               <!-- #region Empty basket -->
-              <q-item v-if="userStore.data.panier.length === 0">
+              <q-item v-if="userStore.data.cart.length === 0">
                 <q-item-section>
                   {{ t('cart.empty') }}
                 </q-item-section>
@@ -107,12 +107,12 @@
             <!-- #region Basket footer -->
             <q-card-section>
               <div class="text-subtitle1">
-                {{ t('cart.total') }} : {{ formatPrice(userStore.panierTotal) }}
+                {{ t('cart.total') }} : {{ formatPrice(userStore.cartTotal) }}
               </div>
 
               <div class="q-mt-sm">
                 <q-btn
-                  v-if="userStore.panierTotal > 0"
+                  v-if="userStore.cartTotal > 0"
                   color="secondary"
                   :label="t('cart.buy')"
                   @click="goToPayment"

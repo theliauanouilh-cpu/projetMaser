@@ -5,20 +5,20 @@ import { type Customer, type product } from '../interfaces';
 //#endregion
 
 export interface State {
-  panier: PanierItem[];
+  cart: CartItem[];
   products: product[];
   customer: Customer | null;
   language: string;
 }
 
-interface PanierItem {
+interface CartItem {
   id          : number;
   quantity    : number;
   nom         : string;
-  prix        : number;
-  categorie   : string;
+  price        : number;
+  category   : string;
   description : string;
-  taille      : string;
+  size      : string;
 }
 
 /**
@@ -27,13 +27,13 @@ interface PanierItem {
 export const useUserStore = defineStore('user', {
   state: () => ({
     data: (LocalStorage.getItem('user-data') as State) ?? {
-      panier: [],
+      cart: [],
       products: [],
       connected: null,
       language: 'fr-FR',
     },
     quantity: 1,
-    selectedCategories: [] as string[],
+    selectedcategorys: [] as string[],
   }),
 
 //#region Getters
@@ -42,15 +42,15 @@ export const useUserStore = defineStore('user', {
     /**
      *  Count the number of items in the cart.
      */
-    panierCount: (state) =>
-      state.data.panier.reduce((total: number, item: PanierItem) => total + item.quantity, 0),
+    cartCount: (state) =>
+      state.data.cart.reduce((total: number, item: CartItem) => total + item.quantity, 0),
 
     /**
      * Calculate the total price of the shopping cart.
      */
-    panierTotal: (state) =>
-      state.data.panier.reduce(
-        (total: number, item: PanierItem) => total + item.prix * item.quantity,
+    cartTotal: (state) =>
+      state.data.cart.reduce(
+        (total: number, item: CartItem) => total + item.price * item.quantity,
         0,
       ),
   },
@@ -62,20 +62,20 @@ export const useUserStore = defineStore('user', {
     /**
      * Push a product and the data in the cart
      */
-    addToPanier(product: product, quantity: number = 1) {
-      const existingItem = this.data.panier.find((item: PanierItem) => item.id === product.id);
+    addToCart(product: product, quantity: number = 1) {
+      const existingItem = this.data.cart.find((item: CartItem) => item.id === product.id);
 
       if (existingItem) {
         existingItem.quantity += quantity;
       } else {
-        this.data.panier.push({
+        this.data.cart.push({
           id: product.id,
           nom: product.nom,
-          prix: product.prix ?? 0,
+          price: product.price ?? 0,
           quantity: quantity,
-          categorie: product.categorie ?? '',
+          category: product.category ?? '',
           description: product.description ?? '',
-          taille: product.taille ?? '',
+          size: product.size ?? '',
         });
       }
       this.quantity = 1;
@@ -84,11 +84,11 @@ export const useUserStore = defineStore('user', {
     /**
      * Delete a product a of the cart
      */
-    deleteFromPanier(id: number) {
-      const index = this.data.panier.findIndex((item: PanierItem) => item.id === id);
+    deleteFromCart(id: number) {
+      const index = this.data.cart.findIndex((item: CartItem) => item.id === id);
 
       if (index > -1) {
-        this.data.panier.splice(index, 1);
+        this.data.cart.splice(index, 1);
       }
     },
 
@@ -96,7 +96,7 @@ export const useUserStore = defineStore('user', {
      * Decrease quantity of a product in cart
      */
     decreaseQuantity(id: number) {
-      const item = this.data.panier.find((item: PanierItem) => item.id === id);
+      const item = this.data.cart.find((item: CartItem) => item.id === id);
 
       if (!item) return;
 
@@ -109,7 +109,7 @@ export const useUserStore = defineStore('user', {
      * Increase quantity of a product in cart
      */
     increaseQuantity(id: number) {
-      const item = this.data.panier.find((item: PanierItem) => item.id === id);
+      const item = this.data.cart.find((item: CartItem) => item.id === id);
 
       if (!item) return;
 
@@ -121,8 +121,8 @@ export const useUserStore = defineStore('user', {
     /**
      * Clear all the cart of this product(s)
      */
-    clearPanier() {
-      this.data.panier = [] as PanierItem[];
+    clearCart() {
+      this.data.cart = [] as CartItem[];
     },
 
     /**

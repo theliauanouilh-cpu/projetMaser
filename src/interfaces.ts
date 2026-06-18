@@ -12,10 +12,10 @@ export interface Customer {
 export interface product {
   id           : number;
   nom          : string;
-  prix         : number;
+  price         : number;
   slide        : number;
   images       : string[];
-  categorie?   : string;
+  category?   : string;
   description? : string;
-  taille?       : string;
+  size?       : string;
 }

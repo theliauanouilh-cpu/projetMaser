@@ -80,7 +80,7 @@ export default {
       products: 'Products',
       cart: 'Cart',
       customerService: 'Customer service',
-      categories: 'Categories',
+      categorys: 'categorys',
     },
   },
 
@@ -90,7 +90,7 @@ export default {
     logout: 'Log out',
   },
 
-  categories: {
+  categorys: {
     black: 'Black',
     green: 'Green',
     brown: 'Brown',

@@ -41,10 +41,10 @@
           flat
           icon="shopping_cart"
           :aria-label="t('layout.drawer.cart')"
-          @click="goToPanier"
+          @click="goToCart"
         >
-          <q-badge v-if="userStore.panierCount > 0" color="red" floating>
-            {{ userStore.panierCount }}
+          <q-badge v-if="userStore.cartCount > 0" color="red" floating>
+            {{ userStore.cartCount }}
           </q-badge>
         </q-btn>
         <!-- #endregion Cart button -->
@@ -69,7 +69,7 @@
             </q-item-section>
           </q-item>
 
-          <q-item clickable v-ripple @click="goToPanier" class="justify-center">
+          <q-item clickable v-ripple @click="goToCart" class="justify-center">
             <q-item-section class="text-center">
               {{ t('layout.drawer.cart') }}
             </q-item-section>
@@ -84,20 +84,20 @@
 
           <q-separator class="q-my-md" />
 
-          <!-- #region Categories -->
+          <!-- #region categorys -->
           <div class="q-px-md q-pb-md flex column items-center">
             <div class="text-subtitle2 q-mb-sm text-center">
-              {{ t('layout.drawer.categories') }}
+              {{ t('layout.drawer.categorys') }}
             </div>
 
             <q-option-group
-              v-model="userStore.selectedCategories"
+              v-model="userStore.selectedcategorys"
               :options="categoryOptions"
               type="checkbox"
               class="text-left"
             />
           </div>
-          <!-- #endregion Categories -->
+          <!-- #endregion categorys -->
 
           <q-separator class="q-my-md" />
 
@@ -163,10 +163,10 @@ const leftDrawerOpen = ref(false);
  * Get category filter options
  */
 const categoryOptions = computed(() => [
-  { label: t('categories.black'), value: 'Black' },
-  { label: t('categories.green'), value: 'Green' },
-  { label: t('categories.brown'), value: 'Brown' },
-  { label: t('categories.white'), value: 'White' },
+  { label: t('categorys.black'), value: 'Black' },
+  { label: t('categorys.green'), value: 'Green' },
+  { label: t('categorys.brown'), value: 'Brown' },
+  { label: t('categorys.white'), value: 'White' },
 ]);
 
 const router = useRouter();
@@ -210,7 +210,7 @@ function toggleLeftDrawer() {
 /**
  * Go to cart page
  */
-function goToPanier() {
+function goToCart() {
   void router.push('/panier');
   leftDrawerOpen.value = false;
 }

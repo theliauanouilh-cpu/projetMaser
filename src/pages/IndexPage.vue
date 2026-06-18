@@ -41,16 +41,16 @@
                 <div class="row text-h6">
                   <div class="col">{{ product.nom }}</div>
                   <div class="col text-right">
-                    {{ formatPrice(product.prix) }}
+                    {{ formatPrice(product.price) }}
                   </div>
                 </div>
 
-                <div v-if="product.categorie" class="text-caption text-grey-7">
-                  {{ t('menu.product.category') }} : {{ product.categorie }}
+                <div v-if="product.category" class="text-caption text-grey-7">
+                  {{ t('menu.product.category') }} : {{ product.category }}
                 </div>
 
-                <div v-if="product.taille" class="text-caption text-grey-7">
-                  {{ t('menu.product.dimension') }} : {{ product.taille }}
+                <div v-if="product.size" class="text-caption text-grey-7">
+                  {{ t('menu.product.dimension') }} : {{ product.size }}
                 </div>
 
                 <div class="text-caption text-grey-7">
@@ -157,15 +157,15 @@ const { t, n } = useI18n()
 
 
 /**
- * Filter products by selected categories
+ * Filter products by selected categorys
  */
 const productsFiltres = computed(() => {
-  if (userStore.selectedCategories.length === 0) {
+  if (userStore.selectedcategorys.length === 0) {
     return products.value
   }
 
   return products.value.filter((product) =>
-    userStore.selectedCategories.includes(product.categorie ?? '')
+    userStore.selectedcategorys.includes(product.category ?? '')
   )
 })
 
@@ -191,14 +191,14 @@ const productsPagines = computed(() => {
 /**
  * Format the price in euro
  */
-function formatPrice(prix: number): string {
+function formatPrice(price: number): string {
   try {
-    return n(prix, {
+    return n(price, {
       style: 'currency',
       currency: 'EUR'
     })
   } catch {
-    return `${prix.toFixed(2)} €`
+    return `${price.toFixed(2)} €`
   }
 }
 
@@ -207,7 +207,7 @@ function formatPrice(prix: number): string {
  */
 function showNotif() {
   $q.notify({
-    message: t('notifications.cartCount', { count: userStore.panierCount }),
+    message: t('notifications.cartCount', { count: userStore.cartCount }),
     position: 'top',
     color: 'primary',
     actions: [
@@ -230,7 +230,7 @@ function showNotif() {
  * Add a product to the cart
  */
 function handleAddToCart(product: product) {
-  userStore.addToPanier(product, userStore.quantity)
+  userStore.addToCart(product, userStore.quantity)
   showNotif()
 }
 
