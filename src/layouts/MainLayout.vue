@@ -17,6 +17,14 @@
 
         <q-toolbar-title class="text-center"> SofaLand </q-toolbar-title>
 
+        <q-btn
+        flat
+        round
+        color="black"
+        label="Black"
+        @click="toggleDarkMode"
+        />
+
         <!-- #region Language select -->
         <q-select
           v-model="locale"
@@ -41,6 +49,7 @@
           flat
           icon="shopping_cart"
           :aria-label="t('layout.drawer.cart')"
+          class="animated bounce"
           @click="goToCart"
         >
           <q-badge v-if="userStore.cartCount > 0" color="red" floating>
@@ -154,6 +163,7 @@ import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
 import langFr from 'quasar/lang/fr';
 import langEnUS from 'quasar/lang/en-US';
+
 //#endregion
 
 //#region Init
@@ -196,6 +206,8 @@ watch(
   },
   { immediate: true },
 );
+
+
 //#endregion
 
 
@@ -254,6 +266,10 @@ function goToproduct() {
 function goToClient() {
   void router.push('/client');
   leftDrawerOpen.value = false;
+}
+
+function toggleDarkMode() {
+  $q.dark.toggle()
 }
 //#endregion
 

@@ -73,6 +73,15 @@ async function getDbUsers(): Promise<Customer[]> {
  */
 async function getDbproduct(): Promise<product[]> {
   return await db.products.toArray();
+
+  /*
+  getDbProducts(offset: number, limit: number)
+  {
+    products: [],
+    totalProducts: n
+  }
+
+  */
 }
 //#endregion
 
