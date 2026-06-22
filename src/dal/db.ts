@@ -1,6 +1,6 @@
 //#region import
 import { Dexie, type EntityTable } from 'dexie';
-import { type Customer, type product} from '../interfaces'
+import { type Customer, type product, type productResults} from '../interfaces'
 import productList from '../../data/products.json';
 //#endregion
 
@@ -71,18 +71,39 @@ async function getDbUsers(): Promise<Customer[]> {
 /**
  * Get all products
  */
-async function getDbproduct(): Promise<product[]> {
-  return await db.products.toArray();
+async function getDbProduct(categories: string[], offset: number, limit: number): Promise<productResults> {
 
-  /*
-  getDbProducts(offset: number, limit: number)
-  {
-    products: [],
-    totalProducts: n
+  console.log('getDbProduct', categories)
+
+  const totalProducts = categories.length ?
+                          await db.products
+                                .where('category')
+                                .anyOf(categories)
+                                .count() :
+                          await db.products.count()
+
+
+  const products = categories.length ?
+                      await db.products
+                              .where('category')
+                              .anyOf(categories)
+                              .offset(offset)
+                              .limit(limit)
+                              .toArray() :
+                      await db.products
+                              .offset(offset)
+                              .limit(limit)
+                              .toArray()
+
+  return {
+    products     : products,
+    totalProducts: totalProducts
   }
-
-  */
 }
+
+
+
+
 //#endregion
 
-export { db, addDbCustomer, getDbUsers, Initproduct, getDbproduct };
+export { db, addDbCustomer, getDbUsers, Initproduct, getDbProduct };

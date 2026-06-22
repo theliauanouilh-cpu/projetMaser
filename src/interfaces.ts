@@ -19,3 +19,8 @@ export interface product {
   description? : string;
   size?       : string;
 }
+
+export interface productResults {
+  products      : product[];
+  totalProducts : number;
+}
