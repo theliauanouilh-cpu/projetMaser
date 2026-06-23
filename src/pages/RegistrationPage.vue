@@ -114,15 +114,16 @@
 //#region Import
 import { reactive, ref, onMounted, computed } from 'vue'
 import { LocalStorage, QForm, useQuasar } from 'quasar'
+import { useRouter }                      from 'vue-router'
 import * as bll from '../bll/bll'
 import { useI18n } from 'vue-i18n'
 //#endregion
 
 
 //#region Init
-const $q = useQuasar()
-const { t } = useI18n()
-
+const $q              = useQuasar()
+const { t }           = useI18n()
+const router          = useRouter()
 const formInscription = ref<QForm | null>(null)
 
 const form = reactive({
@@ -192,6 +193,14 @@ const phoneRules = computed(() => [
 
 
 //#region Function
+
+/**
+ * Go to products page
+ */
+function goToConnection() {
+  void router.push('/connection');
+}
+
 /**
  * Validate and save register form
  */
@@ -224,6 +233,7 @@ async function saveForm() {
       progress: true,
       timeout: 3000
     })
+    goToConnection()
   } catch (e) {
     console.log('oops', e)
 

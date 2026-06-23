@@ -1,7 +1,6 @@
  <template>
   <!-- #region Page -->
   <q-page class="page-menu" style="min-height: 100vh">
-        {{ userStore.selectedCategories }}
     <div class="row no-wrap" style="min-height: 100vh">
       <div class="col q-pa-lg">
         <!-- #region Product list -->
@@ -170,19 +169,11 @@ const userStore      = useUserStore()
 const $q             = useQuasar()
 const productsByPage = 3
 const { t, n }       = useI18n()
-
-
-
-
 //#endregion
 
 
 
 //#region Function
-
-
-
-
 /**
  * Format the price in euro
  */
