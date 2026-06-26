@@ -17,7 +17,10 @@
         />
         <!-- #endregion Menu button -->
 
+
         <q-toolbar-title class="text-left"> SofaLand </q-toolbar-title>
+
+
 
         <!-- #region Language select -->
         <q-select
@@ -87,23 +90,6 @@
 
           <q-separator class="q-my-md" />
 
-          <!-- #region categorys -->
-          <div class="q-px-md q-pb-md flex column items-center">
-            <div class="text-subtitle2 q-mb-sm text-center">
-              {{ t('layout.drawer.categorys') }}
-            </div>
-
-            <q-option-group
-              v-model="userStore.selectedCategories"
-              :options="categoryOptions"
-              type="checkbox"
-              class="text-left"
-            />
-          </div>
-          <!-- #endregion categorys -->
-
-          <q-separator class="q-my-md" />
-
           <!-- #region Auth buttons -->
           <div class="q-px-md column items-center q-gutter-sm">
             <q-btn
@@ -150,7 +136,7 @@
 
 <script setup lang="ts">
 //#region import
-import { ref, computed, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '../stores/userStore';
 import { useI18n } from 'vue-i18n';
@@ -163,17 +149,6 @@ import langEn from 'quasar/lang/en-US';
 
 //#region Init
 const leftDrawerOpen = ref(false);
-
-/**
- * Get category filter options
- */
-const categoryOptions = computed(() => [
-  { label: t('categorys.black'), value: 'Black' },
-  { label: t('categorys.green'), value: 'Green' },
-  { label: t('categorys.brown'), value: 'Brown' },
-  { label: t('categorys.white'), value: 'White' },
-]);
-
 const router = useRouter();
 const userStore = useUserStore();
 const $q = useQuasar();

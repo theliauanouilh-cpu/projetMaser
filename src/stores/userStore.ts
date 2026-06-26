@@ -33,7 +33,7 @@ export const useUserStore = defineStore('user', {
       language: 'fr-FR',
     },
     quantity: 1,
-    selectedcategorys: [] as string[],
+    selectedCategories: [] as string[],
   }),
 
 //#region Getters
